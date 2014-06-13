@@ -1,11 +1,26 @@
-
 <h1>Game</h1>
-<table>
-<tr data-ng-repeat="row in [] | range : 1:gameData.Stage.height">
-    <td data-ng-repeat="col in [] | range : 1:gameData.Stage.width">
-        {{row}}.{{col}}
-    </td>
-</tr>
-</table>
+
+<div class="row">
+    <div class="col-md-10">
+        <table>
+            <tr data-ng-repeat="row in [] | range : 1:gameData.Stage.height">
+                <td data-ng-repeat="col in [] | range : 1:gameData.Stage.width">
+                    <!-- {{row}}.{{col}}-->
+                    |~~~~|
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-2">
+        <h3>Players</h3>
+        <ol>
+            <li data-ng-repeat="player in gameData.Players | orderBy : player.points">
+                {{player.nick}}
+                <small>{{player.points}}</small>
+                {{player.state}}
+            </li>
+        </ol>
+    </div>
+</div>
 </body>
 </html>
