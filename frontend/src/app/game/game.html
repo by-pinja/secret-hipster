@@ -4,11 +4,13 @@
     table.map {
         border: 1px solid #333;
         font-family: monospace;
+        background: #FFF;
     }
 </style>
 
 <div class="row">
     <div class="col-md-10">
+        <b>Selected ship:</b> {{selectedShip.name}}
         <table class="map">
             <tr data-ng-repeat="row in [] | range : 1:gameData.Stage.height">
                 <td data-ng-repeat="col in [] | range : 1:gameData.Stage.width">
@@ -26,7 +28,7 @@
                 {{player.state}}
             </li>
         </ol>
-        <h3>Boats</h3>
+        <h3>Ships</h3>
         <ul>
             <li data-ng-repeat="ship in gameData.Ships">
                 <span data-ng-click="shipSelected(ship)" data-ng-class="{'bg-success' : (ship == selectedShip)}">{{ship.name}} {{ship.width}}</span>
