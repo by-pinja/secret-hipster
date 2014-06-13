@@ -4,6 +4,8 @@ body {
   cursor: default;
   overflow-y: scroll;
   font-family: 'PT Sans', sans-serif;
+  background: #ffffff url('../img/bg.jpg') no-repeat 10px 50px;
+  background-size: cover;
 }
 
 h1, h2, h3, h4, h5, h5 {
@@ -18,18 +20,17 @@ h1, h2, h3, h4, h5, h5 {
 }
 
 .main-container {
-  margin-top: 50px;
   margin-bottom: 30px;
 }
 
-header .navbar-nav {
-  float: none;
+.navbar {
+  button {
+    margin-top: 5px;
+  }
 }
-
 footer {
   .navbar {
     min-height: 25px;
-    max-height: 25px;
     text-align: center;
 
     .navbar-nav {
