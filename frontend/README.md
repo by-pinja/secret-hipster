@@ -1,4 +1,4 @@
-frontend
+lfrontend
 ============
 This is an example AngularJS application to demonstrate how to use separate back- and frontend applications. Currently
 this demo contains following features:
