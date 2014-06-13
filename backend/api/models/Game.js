@@ -1,25 +1,27 @@
-'use strict';
-
 /**
- * Author.js
+ * Game.js
  *
  * @description :: TODO: You might write a short summary of how this model works and what it represents here.
  * @docs        :: http://sailsjs.org/#!documentation/models
  */
+
 module.exports = {
-    schema: true,
 
     attributes: {
-        name: {
+        title: {
             type: 'string',
             required: true
         },
-        description: {
-            type: 'text'
+        players: {
+            collection: 'player',
+            via: 'player'
         },
-        books: {
-            collection: 'book',
-            via: 'author'
+        stage: {
+            model: 'stage'
+        },
+        state: {
+            type: 'integer', // 1 = pregame, 2 = round begin, 3 = round end, 4 = end game.
+            defaultsTo: 1
         }
     }
 };
