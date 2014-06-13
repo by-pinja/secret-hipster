@@ -57,11 +57,14 @@
                 {{player.state}}
             </li>
         </ol>
-            <h3>Ships</h3>
-            <ul>
-                <li data-ng-repeat="ship in gameData.Ships">
-                    <span data-ng-click="shipSelected(ship)" data-ng-class="{'bg-success' : (ship == selectedShip)}">{{ship.name}} {{ship.width}}</span>
-                </li>
-            </ul>
+        
+        <h3>Ships</h3>
+        <ul>
+            <li data-ng-repeat="ship in gameData.Ships">
+                <span data-ng-click="shipSelected(ship)" data-ng-class="{'bg-success' : (ship == selectedShip)}">{{ship.name}} {{ship.width}}</span>
+            </li>
+        </ul>
+
+        <button class="btn btn-primary" data-ng-click="readyToPlay()">I'm ready</button>
     </div>
 </div>

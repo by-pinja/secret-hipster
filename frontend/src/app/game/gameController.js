@@ -25,6 +25,14 @@
                         }
                 });
 
+                $scope.readyToPlay = function() {
+                    $sailsSocket
+                        .post(BackendConfig.url+ '/game/placeShips', {some: 'data'})
+                        .success(function(response) {
+                            console.log("got some response");
+                            console.log(response);
+                        });
+                };
 
                 $scope.shipSelected = function(ship) {
                     if ($scope.selectedShip === ship) {
@@ -32,8 +40,6 @@
                     } else {
                         $scope.selectedShip = ship;
                     }
-
-
                 };
 
                 $scope.placeShip = function(row, col) {

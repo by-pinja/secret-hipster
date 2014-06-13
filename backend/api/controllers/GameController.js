@@ -5,6 +5,7 @@
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
 var uuid = require('node-uuid');
+var _ = require('lodash');
 
 module.exports = {
 	joinLobby: function(req, res) {
@@ -62,10 +63,8 @@ module.exports = {
             ]
         };
 
-        console.log(req.isSocket);
-
         // todo which game to join socket?
-        console.log(sails.sockets.join(req, 'game'));
+        sails.sockets.join(req, 'game');
 
         res.json(data);
     },
@@ -77,14 +76,14 @@ module.exports = {
             bar: 'foo'
         };
 
-        console.log('jee asetin laivat');
+        var socketData = {
+            verb: 'playerReady',
+            data: 'player foo is ready'
+        };
 
-        sails.sockets.broadcast('game', 'placeShips', data, req.socket);
-
-
-        var roomNames = JSON.stringify(sails.sockets.socketRooms(req.socket));
-
-        console.log(roomNames);
+        sails.sockets.emit(_.remove(sails.sockets.subscribers(), function(socket) {
+            return socket != sails.sockets.id(req.socket);
+        }), 'game', socketData);
 
         res.json(data);
     }
