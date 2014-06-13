@@ -100,10 +100,15 @@
 
                     if( $scope.gameData.Ships.length === 0 ) {
                         $scope.shipsPlaced = true;
+                        $scope.selectedShip = null;
                         return;
                     }
 
+                    $scope.shipsPlaced = false;
                     $scope.selectedShip = $scope.gameData.Ships[0];
+
+
+
 
                 };
 
