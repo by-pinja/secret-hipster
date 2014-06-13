@@ -81,15 +81,15 @@
                          * authentication method will store user data and JWT token to local storage
                          * where those can be used.
                          *
-                         * @param   {*} credentials
+                         * @param   {*} nick
                          *
                          * @returns {*|Promise}
                          */
-                        login: function(credentials) {
+                        join: function(nick) {
                             return $http
-                                .post(BackendConfig.url + '/login', credentials, {withCredentials: true})
+                                .post(BackendConfig.url + '/game/joinLobby', { nick: nick })
                                 .success(function(response) {
-                                    Storage.set('auth_token', JSON.stringify(response));
+                                    Storage.set("auth_token", JSON.stringify(response.token));
                                 });
                         },
 

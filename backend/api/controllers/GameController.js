@@ -8,9 +8,23 @@ var uuid = require('node-uuid');
 
 module.exports = {
 	joinLobby: function(req, res) {
-        var nick = req.param('nick');
+        var data = {
+            nick: req.param('nick'),
+            uuid: uuid.v4()
+        };
 
-        res.json(200, {nick: nick, token: tokenService.issueToken(uuid.v4())});
+        // Create new nick
+        Nick
+            .create(data)
+            .exec(
+                function(err, data) {
+                    if (err) {
+                        res.json(401, err);
+                    } else {
+                        res.json(200, data);
+                    }
+                }
+            );
     },
 
     joinGame: function(req, res) {
