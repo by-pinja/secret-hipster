@@ -45,7 +45,7 @@
                 $scope.placeShip = function(row, col) {
                     var clickShip =$scope.shipMapData[row][col].ship;
 
-                    if (!$scope.selectedShip && clickShip) {
+                    if (clickShip) {
                         $scope.gameData.Ships.push(clickShip);
                         for (var i=0; i < $scope.gameData.Stage.height; i++) {
                             for (var j=0; j < $scope.gameData.Stage.width; j++) {
@@ -105,17 +105,10 @@
                     });
 
                     if( $scope.gameData.Ships.length === 0 ) {
-                        $scope.shipsPlaced = true;
                         $scope.selectedShip = null;
                         return;
                     }
-
-                    $scope.shipsPlaced = false;
                     $scope.selectedShip = $scope.gameData.Ships[0];
-
-
-
-
                 };
 
 

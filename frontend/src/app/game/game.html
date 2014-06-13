@@ -21,19 +21,33 @@
 
     .ship-1 {
         background: orangered;
-        color: red;
         transition:background 0.5s;
     }
     .ship-2 {
         background: greenyellow;
-        color: #008000;
+        transition:background 0.5s;
+    }
+    .ship-3 {
+        background: #a15900;
+        transition:background 0.5s;
+    }
+    .ship-4 {
+        background: #0055cc;
+        transition:background 0.5s;
+    }
+    .ship-5 {
+        background: #008800;
+        transition:background 0.5s;
+    }
+    .ship-6 {
+        background: #003300;
         transition:background 0.5s;
     }
 </style>
 
 <div class="row">
     <div class="col-md-10">
-        <div data-ng-class="{'hidden' : shipsPlaced}">
+        <div data-ng-class="{'hidden' : !gameData.Ships.length}">
         <b>Selected ship:</b> {{selectedShip.name}}, {{selectedShip.width}}<br>
         <b>Direction:</b>
         <label><input type="radio" name="direction" ng-model="placeDirection" value="horizontal"> Horizontal</label>
@@ -65,6 +79,6 @@
             </li>
         </ul>
 
-        <button class="btn btn-primary" data-ng-click="readyToPlay()">I'm ready</button>
+        <button class="btn btn-primary" data-ng-click="readyToPlay()" data-ng-disabled="gameData.Ships.length">I'm ready</button>
     </div>
 </div>
