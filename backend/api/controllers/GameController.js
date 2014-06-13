@@ -10,8 +10,10 @@ module.exports = {
 	joinLobby: function(req, res) {
         var data = {
             nick: req.param('nick'),
-            uuid: uuid.v4()
+            token: uuid.v4()
         };
+
+        console.log(req.token);
 
         // Create new nick
         Nick

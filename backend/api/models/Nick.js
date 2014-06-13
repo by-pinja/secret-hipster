@@ -14,7 +14,7 @@ module.exports = {
             type:'string',
             required: true
         },
-        uuid: {
+        token: {
             type:'string',
             required: true
         }
