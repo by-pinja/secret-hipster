@@ -7,10 +7,11 @@
             '$scope', '$sailsSocket',  'BackendConfig',
             function($scope, $sailsSocket, BackendConfig) {
                 var emptyPosition = {char : '~~~', ship: null};
+                $scope.placeDirection = 'horizontal';
+
                 $sailsSocket
                     .get(BackendConfig.url+ '/game/joinGame').success(function(message) {
                         $scope.gameData = message;
-
                         $scope.shipMapData = new Array();
 
                         for (var row=0; row < $scope.gameData.Stage.height; row++) {
@@ -43,19 +44,43 @@
                         return;
                     }
 
-
-                    if(col+$scope.selectedShip.width > $scope.gameData.Stage.width) {
+                    if (!$scope.selectedShip && !clickShip) {
                         return;
                     }
 
-                    for(var i=0; i < $scope.selectedShip.width; i++) {
-                        if($scope.shipMapData[row][col+i].ship) {
+
+                    if ($scope.placeDirection === 'horizontal') {
+                        if (col + $scope.selectedShip.width > $scope.gameData.Stage.width) {
                             return;
+                        }
+
+
+                        for (var i = 0; i < $scope.selectedShip.width; i++) {
+                            if ($scope.shipMapData[row][col + i].ship) {
+                                return;
+                            }
+                        }
+                    } else {
+                        if (row + $scope.selectedShip.width > $scope.gameData.Stage.height) {
+                            return;
+                        }
+
+
+                        for (var i = 0; i < $scope.selectedShip.width; i++) {
+                            if ($scope.shipMapData[row+i][col].ship) {
+                                return;
+                            }
                         }
                     }
 
-                    for(var i=0; i < $scope.selectedShip.width; i++) {
-                        $scope.shipMapData[row][col+i] = {char : '***', ship : $scope.selectedShip};
+                    if ($scope.placeDirection === 'horizontal') {
+                        for(var i=0; i < $scope.selectedShip.width; i++) {
+                            $scope.shipMapData[row][col+i] = {char : '***', ship : $scope.selectedShip};
+                        }
+                    } else {
+                        for(var i=0; i < $scope.selectedShip.width; i++) {
+                            $scope.shipMapData[row+i][col] = {char : '***', ship : $scope.selectedShip};
+                        }
                     }
 
                     $scope.gameData.Ships.forEach(function(value, index){
