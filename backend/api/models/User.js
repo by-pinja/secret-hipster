@@ -29,10 +29,6 @@ module.exports = {
         passports: {
             collection: 'Passport',
             via: 'user'
-        },
-        messages: {
-            collection: 'message',
-            via: 'user'
         }
     }
 };
