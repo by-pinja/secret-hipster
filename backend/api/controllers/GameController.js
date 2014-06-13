@@ -4,14 +4,13 @@
  * @description :: Server-side logic for managing Games
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
+var uuid = require('node-uuid');
 
 module.exports = {
 	joinLobby: function(req, res) {
-        var data = {
-            nick: req.param('nick')
-        };
+        var nick = req.param('nick');
 
-        res.json(data);
+        res.json(200, {nick: nick, token: tokenService.issueToken(uuid.v4())});
     },
 
     joinGame: function(req, res) {
