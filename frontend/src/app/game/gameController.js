@@ -8,9 +8,8 @@
             function($scope, $sailsSocket, BackendConfig) {
                 // Game socket message handlers
                 var handlers = {};
-                var emptyPosition = {char : '~~~', ship: null};
+                var emptyPosition = {char : '', ship: null};
                 $scope.placeDirection = 'horizontal';
-
 
                 $sailsSocket
                     .get(BackendConfig.url+ '/game/joinGame').success(function(message) {
@@ -23,7 +22,6 @@
                                 $scope.shipMapData[row][col] = emptyPosition;
                             }
                         }
-
                 });
 
 
@@ -78,11 +76,11 @@
 
                     if ($scope.placeDirection === 'horizontal') {
                         for(var i=0; i < $scope.selectedShip.width; i++) {
-                            $scope.shipMapData[row][col+i] = {char : '***', ship : $scope.selectedShip};
+                            $scope.shipMapData[row][col+i] = {char : '', ship : $scope.selectedShip};
                         }
                     } else {
                         for(var i=0; i < $scope.selectedShip.width; i++) {
-                            $scope.shipMapData[row+i][col] = {char : '***', ship : $scope.selectedShip};
+                            $scope.shipMapData[row+i][col] = {char : '', ship : $scope.selectedShip};
                         }
                     }
 
