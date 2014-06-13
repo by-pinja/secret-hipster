@@ -23,7 +23,8 @@
         'frontend.filters',
         'frontend.interceptors',
         'frontend.services',
-        'frontend.example'
+        'frontend.example',
+        'frontend.game'
     ]);
 
     // Initialize used frontend specified modules
@@ -33,6 +34,7 @@
     angular.module('frontend.interceptors', []);
     angular.module('frontend.services', []);
     angular.module('frontend.example', []);
+    angular.module('frontend.game', []);
 
     /**
      * Configuration for frontend application, this contains following main sections:
@@ -78,7 +80,13 @@ angular.module('frontend')
                     .state('anon.lobby', {
                         url: '/lobby',
                         templateUrl: '/frontend/lobby/lobby.html'
+                    })
+                    .state('anon.game', {
+                        url: '/game',
+                        templateUrl: '/frontend/game/game.html',
+                        controller: 'gameController'
                     });
+
 
                 // Routes that needs authenticated user
                 $stateProvider
