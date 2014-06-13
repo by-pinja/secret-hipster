@@ -21,5 +21,8 @@ module.exports.policies = {
 
     AuthController: {
         '*': [ 'passport' ]
+    },
+    GameController: {
+        '*': [ 'passport' ]
     }
 };
