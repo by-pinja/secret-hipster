@@ -15,7 +15,35 @@ module.exports = {
 
     joinGame: function(req, res) {
         var data = {
-            foo: 'bar'
+            Name: 'Awesome game',
+            Players: [
+                {
+                    nick: 'foo',
+                    points: 0,
+                    state: 0
+                },
+                {
+                    nick: 'bar',
+                    points: 0,
+                    state: 0
+                }
+            ],
+            Stage: {
+                width: 10,
+                height: 10
+            },
+            Ships: [
+                {
+                    id: 1,
+                    name: 'Ruotsin laiva',
+                    width: 4
+                },
+                {
+                    id: 2,
+                    name: 'Jolla',
+                    width: 1
+                }
+            ]
         };
 
         res.json(data);
