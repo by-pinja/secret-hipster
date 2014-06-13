@@ -79,14 +79,9 @@ angular.module('frontend')
                     })
                     .state('anon.lobby', {
                         url: '/lobby',
+                        controller: 'LobbyController',
                         templateUrl: '/frontend/lobby/lobby.html'
-                    })
-                    .state('anon.game', {
-                        url: '/game',
-                        templateUrl: '/frontend/game/game.html',
-                        controller: 'gameController'
                     });
-
 
                 // Routes that needs authenticated user
                 $stateProvider
@@ -97,6 +92,21 @@ angular.module('frontend')
                             access: AccessLevels.user
                         }
                     });
+
+                $stateProvider
+                    .state('game', {
+                        abstract: true,
+                        template: '<ui-view/>',
+                        data: {
+                            access: AccessLevels.user
+                        }
+                    })
+                    .state('game.game', {
+                        url: '/game',
+                        templateUrl: '/frontend/game/game.html',
+                        controller: 'gameController'
+                    });
+
 
                 // For any unmatched url, redirect to /state1
                 $urlRouterProvider.otherwise('/lobby');
