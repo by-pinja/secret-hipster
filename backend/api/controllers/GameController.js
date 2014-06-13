@@ -13,7 +13,7 @@ module.exports = {
             token: uuid.v4()
         };
 
-        console.log(req.token);
+
 
         // Create new nick
         Nick
@@ -62,13 +62,29 @@ module.exports = {
             ]
         };
 
+        console.log(req.isSocket);
+
+        // todo which game to join socket?
+        console.log(sails.sockets.join(req, 'game'));
+
         res.json(data);
     },
 
-    PlaceShips: function(req, res) {
+    placeShips: function(req, res) {
         var data = {
-            foo: 'bar'
+            foo: 'bar',
+            token: req.token,
+            bar: 'foo'
         };
+
+        console.log('jee asetin laivat');
+
+        sails.sockets.broadcast('game', 'placeShips', data, req.socket);
+
+
+        var roomNames = JSON.stringify(sails.sockets.socketRooms(req.socket));
+
+        console.log(roomNames);
 
         res.json(data);
     }
