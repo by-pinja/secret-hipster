@@ -32,13 +32,7 @@
     angular.module('frontend.filters', []);
     angular.module('frontend.interceptors', []);
     angular.module('frontend.services', []);
-    angular.module('frontend.example', [
-        'frontend.example.book',
-        'frontend.example.books',
-        'frontend.example.authors',
-        'frontend.example.messages',
-        'frontend.example.chat'
-    ]);
+    angular.module('frontend.example', []);
 
     /**
      * Configuration for frontend application, this contains following main sections:
@@ -81,16 +75,10 @@ angular.module('frontend')
                             access: AccessLevels.anon
                         }
                     })
-                    .state('anon.about', {
-                        url: '/about',
-                        templateUrl: '/frontend/about/about.html'
-                    })
-                    .state('anon.login', {
-                        url: '/login',
-                        templateUrl: '/frontend/login/login.html',
-                        controller: 'LoginController'
-                    })
-                ;
+                    .state('anon.lobby', {
+                        url: '/lobby',
+                        templateUrl: '/frontend/lobby/lobby.html'
+                    });
 
                 // Routes that needs authenticated user
                 $stateProvider
@@ -100,41 +88,7 @@ angular.module('frontend')
                         data: {
                             access: AccessLevels.user
                         }
-                    })
-                    .state('example.books', {
-                        url: '/books',
-                        templateUrl: '/frontend/books/books.html',
-                        controller: 'BooksController'
-                    })
-                    .state('example.book', {
-                        url: '/book/:bookTitle',
-                        templateUrl: '/frontend/book/book.html',
-                        controller: 'BookController',
-                        resolve: {
-                            book: [
-                                '$stateParams','DataService',
-                                function($stateParams, DataService) {
-                                    return DataService.getOne('book', {title: $stateParams.bookTitle});
-                                }
-                            ]
-                        }
-                    })
-                    .state('example.authors', {
-                        url: '/authors',
-                        templateUrl: '/frontend/authors/authors.html',
-                        controller: 'AuthorsController'
-                    })
-                    .state('example.messages', {
-                        url: '/messages',
-                        templateUrl: '/frontend/messages/messages.html',
-                        controller: 'MessagesController'
-                    })
-                    .state('example.chat', {
-                        url: '/chat',
-                        templateUrl: '/frontend/chat/chat.html',
-                        controller: 'ChatController'
-                    })
-                ;
+                    });
 
                 // For any unmatched url, redirect to /state1
                 $urlRouterProvider.otherwise('/about');
@@ -155,7 +109,7 @@ angular.module('frontend')
                     if (!Auth.authorize(toState.data.access)) {
                         event.preventDefault();
 
-                        $state.go('anon.login');
+                        $state.go('anon.lobby');
                     }
                 });
             }
