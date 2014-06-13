@@ -6,8 +6,11 @@
         [
             '$scope', '$sailsSocket',  'BackendConfig',
             function($scope, $sailsSocket, BackendConfig) {
+                // Game socket message handlers
+                var handlers = {};
                 var emptyPosition = {char : '~~~', ship: null};
                 $scope.placeDirection = 'horizontal';
+
 
                 $sailsSocket
                     .get(BackendConfig.url+ '/game/joinGame').success(function(message) {
@@ -27,7 +30,7 @@
                 $scope.shipSelected = function(ship) {
                     $scope.selectedShip = ship;
 
-                }
+                };
 
                 $scope.placeShip = function(row, col) {
                     var clickShip =$scope.shipMapData[row][col].ship;
@@ -94,8 +97,43 @@
 
                     $scope.selectedShip = null;
 
-                }
+                };
 
+
+                // Listen game messages
+                $sailsSocket
+                    .subscribe('game', function(message) {
+                        handlers[message.verb](message.data);
+                    });
+
+                // Game message handlers
+                /**
+                 * @param data  Player
+                 */
+                handlers.playerReady = function (data) {
+                    console.log('Player ready', data);
+                };
+
+                /**
+                 * @param data  Bombs and time
+                 */
+                handlers.roundBegin = function (data) {
+                    console.log('Round beging', data);
+                };
+
+                /**
+                 * @param data  Players and shots
+                 */
+                handlers.roundEnd = function (data) {
+                    console.log('Round end', data);
+                };
+
+                /**
+                 * @param data  Players
+                 */
+                handlers.gameEnd = function (data) {
+                    console.log('Game end', data);
+                };
             }
         ]
     );
