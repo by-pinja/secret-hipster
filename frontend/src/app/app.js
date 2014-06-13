@@ -91,7 +91,7 @@ angular.module('frontend')
                     });
 
                 // For any unmatched url, redirect to /state1
-                $urlRouterProvider.otherwise('/about');
+                $urlRouterProvider.otherwise('/lobby');
             }
         ]
     );
