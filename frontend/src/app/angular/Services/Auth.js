@@ -101,7 +101,7 @@
                         logout: function() {
                             Storage.unset('auth_token');
 
-                            $state.go('anon.login');
+                            $state.go('anon.lobby');
                         }
                     };
                 }
