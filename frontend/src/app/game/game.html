@@ -15,10 +15,16 @@
         <h3>Players</h3>
         <ol>
             <li data-ng-repeat="player in gameData.Players | orderBy : player.points">
-                {{player.nick}}
-                <small>{{player.points}}</small>
+                <b>{{player.nick}}</b>b>
+                {{player.points}}
                 {{player.state}}
             </li>
         </ol>
+        <h3>Boats</h3>
+        <ul>
+            <li data-ng-repeat="boat in gameData.Ships">
+                <b>{{boat.name}}</b> {{boat.width}}
+            </li>
+        </ul>
     </div>
 </div>
