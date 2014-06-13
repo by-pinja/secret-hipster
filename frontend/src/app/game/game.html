@@ -11,9 +11,8 @@
         border:1px solid #add8e6;
         color:deepskyblue;
         padding:0;
-        width: 25px;
-        height: 25px;
-
+        width: 20px;
+        height: 20px;
     }
     .map td div {
         width:100%;
@@ -23,20 +22,23 @@
     .ship-1 {
         background: orangered;
         color: red;
+        transition:background 0.5s;
     }
     .ship-2 {
         background: greenyellow;
         color: #008000;
+        transition:background 0.5s;
     }
 </style>
 
 <div class="row">
     <div class="col-md-10">
+        <div data-ng-class="{'hidden' : shipsPlaced}">
         <b>Selected ship:</b> {{selectedShip.name}}, {{selectedShip.width}}<br>
         <b>Direction:</b>
         <label><input type="radio" name="direction" ng-model="placeDirection" value="horizontal"> Horizontal</label>
         <label><input type="radio" name="direction" ng-model="placeDirection" value="vertical"> Vertical</label>
-
+        </div>
 
         <table class="map">
             <tr data-ng-repeat="row in [] | range : 1:gameData.Stage.height">

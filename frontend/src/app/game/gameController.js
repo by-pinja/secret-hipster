@@ -14,6 +14,7 @@
                 $sailsSocket
                     .get(BackendConfig.url+ '/game/joinGame').success(function(message) {
                         $scope.gameData = message;
+                        $scope.selectedShip = $scope.gameData.Ships[0];
                         $scope.shipMapData = new Array();
 
                         for (var row=0; row < $scope.gameData.Stage.height; row++) {
@@ -26,7 +27,12 @@
 
 
                 $scope.shipSelected = function(ship) {
-                    $scope.selectedShip = ship;
+                    if ($scope.selectedShip === ship) {
+                        $scope.selectedShip = null;
+                    } else {
+                        $scope.selectedShip = ship;
+                    }
+
 
                 };
 
@@ -42,6 +48,7 @@
                                 }
                             }
                         }
+                        $scope.selectedShip = clickShip;
                         return;
                     }
 
@@ -91,9 +98,12 @@
                        }
                     });
 
+                    if( $scope.gameData.Ships.length === 0 ) {
+                        $scope.shipsPlaced = true;
+                        return;
+                    }
 
-
-                    $scope.selectedShip = null;
+                    $scope.selectedShip = $scope.gameData.Ships[0];
 
                 };
 
