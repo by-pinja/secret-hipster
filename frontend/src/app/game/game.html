@@ -3,6 +3,7 @@
 <style>
     table.map {
         border: 1px solid #333;
+        font-family: monospace;
     }
 </style>
 
@@ -11,7 +12,7 @@
         <table class="map">
             <tr data-ng-repeat="row in [] | range : 1:gameData.Stage.height">
                 <td data-ng-repeat="col in [] | range : 1:gameData.Stage.width">
-                 <span data-ng-click="placeShip(row, col)">~~~|</span>
+                 <span data-ng-click="placeShip(row, col)">{{shipMapData[row][col].char}}|</span>
                 </td>
             </tr>
         </table>
