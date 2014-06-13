@@ -10,7 +10,27 @@
                 $sailsSocket
                     .get(BackendConfig.url+ '/game/joinGame').success(function(message) {
                         $scope.gameData = message;
+                        $scope.shipMapData = [];
                 });
+
+
+                $scope.shipSelected = function(ship) {
+                    $scope.selectedShip = ship;
+
+                }
+
+                $scope.placeShip = function(row, col) {
+                    if (!$scope.selectedShip) return;
+                    $scope.gameData.Ships.forEach(function(value, index){
+                       if(value.id === $scope.selectedShip.id){
+                           $scope.gameData.Ships.splice(index,1);
+                           return;
+                       }
+                    });
+                    $scope.selectedShip = null;
+
+                }
+
             }
         ]
     );

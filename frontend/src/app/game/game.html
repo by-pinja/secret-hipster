@@ -1,12 +1,17 @@
 <h1>Game</h1>
 
+<style>
+    table.map {
+        border: 1px solid #333;
+    }
+</style>
+
 <div class="row">
     <div class="col-md-10">
-        <table>
+        <table class="map">
             <tr data-ng-repeat="row in [] | range : 1:gameData.Stage.height">
                 <td data-ng-repeat="col in [] | range : 1:gameData.Stage.width">
-                    <!-- {{row}}.{{col}}-->
-                    |~~~~|
+                 <span data-ng-click="placeShip(row, col)">~~~|</span>
                 </td>
             </tr>
         </table>
@@ -15,15 +20,15 @@
         <h3>Players</h3>
         <ol>
             <li data-ng-repeat="player in gameData.Players | orderBy : player.points">
-                <b>{{player.nick}}</b>b>
+                <b>{{player.nick}}</b>
                 {{player.points}}
                 {{player.state}}
             </li>
         </ol>
         <h3>Boats</h3>
         <ul>
-            <li data-ng-repeat="boat in gameData.Ships">
-                <b>{{boat.name}}</b> {{boat.width}}
+            <li data-ng-repeat="ship in gameData.Ships">
+                <span data-ng-click="shipSelected(ship)" data-ng-class="{'bg-success' : (ship == selectedShip)}">{{ship.name}} {{ship.width}}</span>
             </li>
         </ul>
     </div>
