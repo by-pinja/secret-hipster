@@ -28,7 +28,7 @@ module.exports = {
             var token = tokenService.issueToken({uuid: data.uuid});
 
             // Create new nick
-            Nick
+            Player
                 .create(data)
                 .exec(
                     function(err, user) {
@@ -91,7 +91,7 @@ module.exports = {
         // Todo add ship placements to database
 
         // Fetch current request user nick data and broadcast it to another clients.
-        Nick
+        Player
             .findOne({uuid: req.token.uuid})
             .exec(function(err, nick) {
                 if (err) {
