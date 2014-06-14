@@ -87,9 +87,9 @@
                          */
                         join: function(nick) {
                             return $http
-                                .post(BackendConfig.url + '/game/joinLobby', { nick: nick })
+                                .post(BackendConfig.url + '/game/joinLobby', {nick: nick})
                                 .success(function(response) {
-                                    Storage.set("auth_token", JSON.stringify(response.token));
+                                    Storage.set("auth_token", JSON.stringify(response));
                                 });
                         },
 

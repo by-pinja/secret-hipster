@@ -16,13 +16,13 @@
  */
 module.exports.policies = {
     // Default policy for all controllers and actions
-    // (`true` allows public access)
     '*': ['passport', 'authenticated'],
 
+    // AuthController is allowed to all
     AuthController: {
-        '*': [ 'passport' ]
+        '*': ['passport']
     },
     GameController: {
-        '*': [ 'passport' ]
+        'joinLobby': ['passport'] // Just this action is allowed to all
     }
 };

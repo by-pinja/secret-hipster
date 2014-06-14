@@ -29,7 +29,7 @@
                     $sailsSocket
                         .post(BackendConfig.url+ '/game/placeShips', {some: 'data'})
                         .success(function(response) {
-                            console.log("got some response");
+                            console.log("Yeah i'm ready to deliver bombs! now just wait others...");
                             console.log(response);
                         });
                 };
@@ -119,32 +119,37 @@
                     });
 
                 // Game message handlers
+
                 /**
                  * @param data  Player
                  */
                 handlers.playerReady = function (data) {
-                    console.log('Player ready', data);
+                    console.log('Player ready');
+                    console.log(data);
                 };
 
                 /**
                  * @param data  Bombs and time
                  */
                 handlers.roundBegin = function (data) {
-                    console.log('Round beging', data);
+                    console.log('Round beging');
+                    console.log(data);
                 };
 
                 /**
                  * @param data  Players and shots
                  */
                 handlers.roundEnd = function (data) {
-                    console.log('Round end', data);
+                    console.log('Round end');
+                    console.log(data);
                 };
 
                 /**
                  * @param data  Players
                  */
                 handlers.gameEnd = function (data) {
-                    console.log('Game end', data);
+                    console.log('Game end');
+                    console.log(data);
                 };
             }
         ]
@@ -152,12 +157,15 @@
 
     angular.module('frontend.game')
         .filter('range', function() {
-        return function(input, min, max) {
-            min = parseInt(min); //Make string input int
-            max = parseInt(max);
-            for (var i=min; i<max; i++)
-                input.push(i);
-            return input;
-        };
-    });
+            return function(input, min, max) {
+                min = parseInt(min); // Make string input int
+                max = parseInt(max);
+
+                for (var i = min; i < max; i++) {
+                    input.push(i);
+                }
+
+                return input;
+            };
+        });
 }());
