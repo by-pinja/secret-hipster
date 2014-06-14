@@ -4,7 +4,7 @@
  * @description :: Server-side logic for managing Games
  * @help        :: See http://links.sailsjs.org/docs/controllers
  */
-var uuid = require('node-uuid');
+
 var _ = require('lodash');
 
 module.exports = {
@@ -15,28 +15,15 @@ module.exports = {
         if (!nick) {
             res.json(400, {message: 'Ohay sailor, you forgot your name? Too much or too little of rum?'});
         } else {
-            // Create user data which is saved to database
-            var data = {
-                nick: nick,
-                uuid: uuid.v4()
-            };
-
-            /**
-             * Issue JWT token, note that there is possible bug with this library because plain uuid crashes it...
-             * This means that we cannot use plain v4 uuid as payload, fuck this shit.
-             */
-            var token = tokenService.issueToken({uuid: data.uuid});
-
-            // Create new nick
-            Player
-                .create(data)
-                .exec(
-                    function(err, user) {
-                        if (err) {
-                            res.json(500, err);
-                        } else {
-                            res.json(200, {user: user, token: token});
-                        }
+            PlayerService
+                .create(nick)
+                .then(
+                    function(data) {
+                        res.json(200, {player: data.player, token: data.token});
+                    },
+                    function(error) {
+                        console.log("error occurred at PlayerService.create()");
+                        console.log(error);
                     }
                 );
         }
@@ -76,9 +63,6 @@ module.exports = {
             ]
         };
 
-        // Todo which 'room' to join socket?
-        sails.sockets.join(req, 'game');
-
         res.json(data);
     },
 
@@ -91,22 +75,28 @@ module.exports = {
         // Todo add ship placements to database
 
         // Fetch current request user nick data and broadcast it to another clients.
-        Player
-            .findOne({uuid: req.token.uuid})
-            .exec(function(err, nick) {
-                if (err) {
-                    // Todo what do we do?
-                } else {
+        PlayerService
+            .getPlayer(req)
+            .then(
+                function(player) {
                     var socketData = {
                         verb: 'playerReady',
-                        data: 'player \'' + nick.nick + '\' is ready to ship some bombs!'
+                        data: {
+                            message: 'player \'' + player.nick + '\' is ready to ship some bombs!',
+                            player: player
+                        }
                     };
 
+                    // Emit socket message to users
                     sails.sockets.emit(_.remove(sails.sockets.subscribers(), function(socket) {
                         return socket != sails.sockets.id(req.socket);
                     }), 'game', socketData);
+                },
+                function(error) {
+                    console.log("error occurred at PlayerService.getPlayer(req)");
+                    console.log(error);
                 }
-            });
+            );
 
         res.json(data);
     }

@@ -23,7 +23,8 @@
     "sails": "~0.10.0-rc7",
     "sails-disk": "~0.10.0",
     "sails-mysql": "~0.10.0-rc7",
-    "validator": "~3.12.0"
+    "validator": "~3.12.0",
+    "q": "~1.0.1"
   },
   "devDependencies": {
     "sails-generate-auth": "~0.1.4"
