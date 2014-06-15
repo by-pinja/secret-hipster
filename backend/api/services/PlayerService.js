@@ -16,6 +16,8 @@ var q = require('q');
  * this token is _private_ so please don't expose it to other clients!
  *
  * @param   {string}    nick
+ * @param   {string}    socketId
+ *
  * @returns {Promise.promise|*}
  */
 exports.create = function(nick, socketId) {
@@ -59,7 +61,7 @@ exports.getPlayer = function(req) {
         .findOne({uuid: req.token.uuid})
         .exec(
             function(error, player) {
-                error ? deferred.rejected(error) : deferred.resolve(player);
+                error ? deferred.reject(error) : deferred.resolve(player);
             }
         );
 
@@ -109,8 +111,7 @@ exports.getPlayers = function() {
         .find({or: socketIds})
         .exec(
             function(error, players) {
-                console.log(players);
-                error ? deferred.rejected(error) : deferred.resolve(players);
+                error ? deferred.reject(error) : deferred.resolve(players);
             }
         );
 
