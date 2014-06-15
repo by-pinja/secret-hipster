@@ -1,8 +1,14 @@
 <h3>Games</h3>
 
-<p>
-    <em>todo: implement game list and create of new game</em>
-</p>
+<ol>
+    <li data-ng-repeat="game in games | orderBy: 'name'">
+        {{game.name}} <ul>
+            <li>State: {{game.state}} <em>todo: explain states</em></li>
+            <li>Stage: <em>todo: stage info here</em></li>
+            <li>Players: {{game.players.length}} <em>todo: show players</em></li>
+        </ul>
+    </li>
+</ol>
 
 <a class="btn btn-primary"
    data-ui-sref="game.game"

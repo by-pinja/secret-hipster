@@ -4,8 +4,8 @@
     angular.module('frontend.controllers')
         .controller('lobbyController',
             [
-                '$scope', '$timeout', '$sailsSocket', 'Player', 'Players', 'Chat', 'Message',
-                function($scope, $timeout, $sailsSocket, Player, Players, Chat, Message) {
+                '$scope', '$timeout', '$sailsSocket', 'Player', 'Players', 'GameService', 'Chat', 'Message',
+                function($scope, $timeout, $sailsSocket, Player, Players, GameService, Chat, Message) {
                     var handlers = {};
 
                     $scope.player = Player.player();
@@ -16,6 +16,14 @@
                     };
 
                     $scope.players = [];
+                    $scope.games = [];
+
+                    // Fetch games from backend
+                    GameService
+                        .get()
+                        .success(function(games) {
+                            $scope.games = games;
+                        });
 
                     // Listen lobby messages
                     $sailsSocket
