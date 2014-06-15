@@ -15,9 +15,15 @@
                     $scope.join = function() {
                         Auth
                             .join($scope.nick)
-                            .then(function() {
-                                $state.go('game.lobby');
-                            });
+                            .then(
+                                function() {
+                                    $state.go('game.lobby');
+                                },
+                                function(error) {
+                                    console.log('error');
+                                    console.log(error);
+                                }
+                            );
                     };
                 }
             ]
