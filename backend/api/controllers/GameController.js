@@ -18,6 +18,8 @@ module.exports = {
                 function(error) {
                     console.log("error occurred at PlayerService.getPlayers()");
                     console.log(error);
+
+                    res.json(500, error);
                 }
             )
     },
@@ -53,6 +55,8 @@ module.exports = {
                     function(error) {
                         console.log("error occurred at PlayerService.create()");
                         console.log(error);
+
+                        res.json(500, error);
                     }
                 );
         }
