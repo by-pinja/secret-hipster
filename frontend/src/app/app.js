@@ -17,6 +17,7 @@
         'angularMoment',
         'linkify',
         'frontend-templates',
+        'luegg.directives',
         'sails.io',
         'frontend.controllers',
         'frontend.directives',
@@ -77,20 +78,10 @@ angular.module('frontend')
                             access: AccessLevels.anon
                         }
                     })
-                    .state('anon.lobby', {
-                        url: '/lobby',
-                        controller: 'LobbyController',
-                        templateUrl: '/frontend/lobby/lobby.html'
-                    });
-
-                // Routes that needs authenticated user
-                $stateProvider
-                    .state('example', {
-                        abstract: true,
-                        template: '<ui-view/>',
-                        data: {
-                            access: AccessLevels.user
-                        }
+                    .state('anon.login', {
+                        url: '/login',
+                        controller: 'LoginController',
+                        templateUrl: '/frontend/login/login.html'
                     });
 
                 $stateProvider
@@ -98,8 +89,13 @@ angular.module('frontend')
                         abstract: true,
                         template: '<ui-view/>',
                         data: {
-                            access: AccessLevels.user
+                            access: AccessLevels.player
                         }
+                    })
+                    .state('game.lobby', {
+                        url: '/lobby',
+                        templateUrl: '/frontend/lobby/lobby.html',
+                        controller: 'lobbyController'
                     })
                     .state('game.game', {
                         url: '/game',
@@ -109,7 +105,7 @@ angular.module('frontend')
 
 
                 // For any unmatched url, redirect to /state1
-                $urlRouterProvider.otherwise('/lobby');
+                $urlRouterProvider.otherwise('/login');
             }
         ]
     );
@@ -127,7 +123,7 @@ angular.module('frontend')
                     if (!Auth.authorize(toState.data.access)) {
                         event.preventDefault();
 
-                        $state.go('anon.lobby');
+                        $state.go('anon.login');
                     }
                 });
             }

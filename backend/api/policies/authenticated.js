@@ -26,11 +26,15 @@ module.exports = function(request, response, next) {
         return response.json(401, {message: 'No Authorization header was found'});
     }
 
+    // Verify current user token
     tokenService.verifyToken(token, function(error, token) {
         if (error) {
             return response.json(401, {message: 'The token is not valid'});
         } else {
             request.token = token;
+
+            // Update player socket id
+            PlayerService.updateSocketId(token, request);
 
             return next();
         }

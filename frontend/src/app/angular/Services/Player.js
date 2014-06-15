@@ -8,10 +8,10 @@
  *      .module('app')
  *      .controller('SomeController',
  *          [
- *              '$scope', 'Auth', 'CurrentUser',
- *              function ($scope, Auth, CurrentUser) {
+ *              '$scope', 'Auth', 'Player',
+ *              function ($scope, Auth, Player) {
  *                  $scope.auth = Auth;
- *                  $scope.user = CurrentUser.user;
+ *                  $scope.user = Player.user;
  *              }
  *          ]
  *      );
@@ -27,14 +27,14 @@
     'use strict';
 
     angular.module('frontend.services')
-        .factory('CurrentUser',
+        .factory('Player',
             [
                 'Storage',
                 function(Storage) {
                     return {
-                        user: function() {
+                        player: function() {
                             if (Storage.get('auth_token')) {
-                                return angular.fromJson(Storage.get('auth_token')).user;
+                                return angular.fromJson(Storage.get('auth_token')).player;
                             } else {
                                 return {};
                             }

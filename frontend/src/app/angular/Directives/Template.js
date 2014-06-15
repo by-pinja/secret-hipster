@@ -17,7 +17,7 @@
                 replace: true,
                 link: function(scope, element, attrs) {
                     scope.getTemplateUrl = function() {
-                        return '/frontend/partials/' + attrs.src + '.html';
+                        return (attrs.src[0] == '/') ? attrs.src + '.html' : '/frontend/partials/' + attrs.src + '.html';
                     };
                 },
                 template: '<div data-ng-include="getTemplateUrl()"></div>'

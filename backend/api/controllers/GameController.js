@@ -8,6 +8,20 @@
 var _ = require('lodash');
 
 module.exports = {
+    getPlayers: function(req, res) {
+        PlayerService
+            .getPlayers()
+            .then(
+                function(players) {
+                    res.json(200, players);
+                },
+                function(error) {
+                    console.log("error occurred at PlayerService.getPlayers()");
+                    console.log(error);
+                }
+            )
+    },
+
     joinLobby: function(req, res) {
         var nick = req.param('nick');
 
@@ -15,10 +29,25 @@ module.exports = {
         if (!nick) {
             res.json(400, {message: 'Ohay sailor, you forgot your name? Too much or too little of rum?'});
         } else {
+            var socketId = sails.sockets.id(req.socket);
+
             PlayerService
-                .create(nick)
+                .create(nick, socketId)
                 .then(
                     function(data) {
+                        var socketData = {
+                            verb: 'playerConnected',
+                            data: {
+                                message: 'Player \'' + data.player.nick + '\' joined!',
+                                player: data.player
+                            }
+                        };
+
+                        // Emit socket message that player has connected to lobby
+                        sails.sockets.emit(_.remove(sails.sockets.subscribers(), function(socket) {
+                            return socket != socketId;
+                        }), 'game', socketData);
+
                         res.json(200, {player: data.player, token: data.token});
                     },
                     function(error) {
@@ -82,12 +111,12 @@ module.exports = {
                     var socketData = {
                         verb: 'playerReady',
                         data: {
-                            message: 'player \'' + player.nick + '\' is ready to ship some bombs!',
+                            message: 'Player \'' + player.nick + '\' is ready to ship some bombs!',
                             player: player
                         }
                     };
 
-                    // Emit socket message to users
+                    // Emit socket message to players that I am ready
                     sails.sockets.emit(_.remove(sails.sockets.subscribers(), function(socket) {
                         return socket != sails.sockets.id(req.socket);
                     }), 'game', socketData);

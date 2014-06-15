@@ -1,0 +1,58 @@
+<h3>Lobby Chat</h3>
+
+<div class="row">
+    <div id="chatMessages" class="col-md-9">
+        <div class="messages chat-screen"
+            data-scroll-glue
+        >
+            <ul class="list-unstyled">
+                <li class="clearfix"
+                    data-ng-repeat="message in messages | orderBy: 'createdAt'"
+                >
+                    <span class="time text-muted">
+                        <code>[{{message.createdAt | amDateFormat:'HH:mm:ss'}}]</code>
+                    </span>
+
+                    <span class=" message">
+                        <span class="text-info">[{{message.nick}}]</span>
+                        <span class="message" data-ng-bind-html="message.message | linkify"></span>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="chatPlayers" class="col-md-3 player">
+        <div class="players">
+            <ul class="list-unstyled">
+                <li class="clearfix"
+                    data-ng-repeat="player in players | orderBy: 'nick'"
+                >
+                    {{player.nick}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="input-group">
+            <span class="input-group-addon">
+                {{player.nick}}
+            </span>
+
+            <input id="message" name="message" class="form-control" type="text"
+               data-key-press="postMessage()"
+               data-key-code="13"
+               data-ng-model="message.message"
+            />
+
+            <span class="input-group-btn">
+                <button class="btn btn-primary" type="button"
+                    data-ng-click="postMessage()"
+                >Yo Ho Ho</button>
+            </span>
+        </div>
+    </div>
+</div>

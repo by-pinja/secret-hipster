@@ -18,10 +18,11 @@ var q = require('q');
  * @param   {string}    nick
  * @returns {Promise.promise|*}
  */
-exports.create = function(nick) {
+exports.create = function(nick, socketId) {
     var data = {
         nick: nick,
-        uuid: uuid.v4()
+        uuid: uuid.v4(),
+        socketId: socketId
     };
 
     /**
@@ -37,7 +38,7 @@ exports.create = function(nick) {
         .create(data)
         .exec(
             function(error, player) {
-                error ? deferred.rejected(error) : deferred.resolve({player: player, token: token});
+                error ? deferred.reject(error) : deferred.resolve({player: player, token: token});
             }
         );
 
@@ -64,3 +65,55 @@ exports.getPlayer = function(req) {
 
     return deferred.promise;
 };
+
+/**
+ * Service method to update current player socket id data. This update is done every
+ * reload of page. This is needed because socket id is changed when user reloads page.
+ * With this we can be sure which players are online and which are not.
+ *
+ * @param   {token}     token
+ * @param   {Request}   request
+ */
+exports.updateSocketId = function(token, request) {
+    if (request.isSocket) {
+        Player
+            .update({uuid: token.uuid}, {socketId: sails.sockets.id(request.socket)})
+            .exec(function(err, updated) {
+                if (err) {
+                    sails.log.error('Cannot update player socket id data');
+                    sails.log.error(err);
+                } else {
+                    // Nothing to do here
+                }
+            });
+
+    } else {
+        sails.log.info('not socket request');
+    }
+};
+
+/**
+ * Service method to fetch currently active users. Activity is based on currently
+ * opened and listen sockets.
+ *
+ * @returns {Promise.promise|*}
+ */
+exports.getPlayers = function() {
+    var deferred = q.defer();
+
+    var socketIds = _.map(sails.sockets.subscribers(), function(socket) {
+        return {socketId: socket};
+    });
+
+    Player
+        .find({or: socketIds})
+        .exec(
+            function(error, players) {
+                console.log(players);
+                error ? deferred.rejected(error) : deferred.resolve(players);
+            }
+        );
+
+    return deferred.promise;
+};
+

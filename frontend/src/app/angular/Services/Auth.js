@@ -13,7 +13,7 @@
  *  Auth.logout()
  *
  * You can use this service fairly easy on your controllers and views if you like to. It's
- * recommend that you use this service with 'CurrentUser' service in your controllers and
+ * recommend that you use this service with 'Player' service in your controllers and
  * views.
  *
  * Usage example in controller:
@@ -22,10 +22,10 @@
  *      .module('app')
  *      .controller('SomeController',
  *          [
- *              '$scope', 'Auth', 'CurrentUser',
- *              function ($scope, Auth, CurrentUser) {
+ *              '$scope', 'Auth', 'Player',
+ *              function ($scope, Auth, Player) {
  *                  $scope.auth = Auth;
- *                  $scope.user = CurrentUser.user;
+ *                  $scope.user = Player.player;
  *              }
  *          ]
  *      );
@@ -33,13 +33,12 @@
  * Usage example in view:
  *
  *  <div data-ng-show="auth.isAuthenticated()">
- *      Hello, <strong>{{user().email}}</strong>
+ *      Hello, <strong>{{player().nick}}</strong>
  *  </div>
  *
  * Happy coding!
  *
  * @todo    Revoke method?
- * @todo    Admin right?
  */
 (function() {
     'use strict';
@@ -47,8 +46,8 @@
     angular.module('frontend.services')
         .factory('Auth',
             [
-                '$http', '$state', 'Storage', 'AccessLevels', 'BackendConfig',
-                function($http, $state, Storage, AccessLevels, BackendConfig) {
+                '$sailsSocket', '$state', 'Storage', 'AccessLevels', 'BackendConfig',
+                function($sailsSocket, $state, Storage, AccessLevels, BackendConfig) {
                     return {
                         /**
                          * Method to authorize current user with given access level in application.
@@ -58,7 +57,7 @@
                          * @returns {*}
                          */
                         authorize: function(access) {
-                            if (access === AccessLevels.user) {
+                            if (access === AccessLevels.player) {
                                 return this.isAuthenticated();
                             } else {
                                 return true;
@@ -86,7 +85,7 @@
                          * @returns {*|Promise}
                          */
                         join: function(nick) {
-                            return $http
+                            return $sailsSocket
                                 .post(BackendConfig.url + '/game/joinLobby', {nick: nick})
                                 .success(function(response) {
                                     Storage.set("auth_token", JSON.stringify(response));
@@ -101,7 +100,7 @@
                         logout: function() {
                             Storage.unset('auth_token');
 
-                            $state.go('anon.lobby');
+                            $state.go('anon.login');
                         }
                     };
                 }

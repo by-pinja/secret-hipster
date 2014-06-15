@@ -32,7 +32,8 @@
     "angular-sanitize": "~1.2.16",
     "sails.io.js": "~0.10.0-rc4",
     "angularSails": "*",
-    "angular-linkify": "~0.3.3"
+    "angular-linkify": "~0.3.3",
+    "angularjs-scroll-glue-Luegg": "~1.0.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.14"

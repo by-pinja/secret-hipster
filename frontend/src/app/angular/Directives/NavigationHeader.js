@@ -15,9 +15,9 @@
                 scope: {},
                 templateUrl: '/frontend/partials/Directives/NavigationHeader/header.html',
                 controller: [
-                    '$scope', 'CurrentUser', 'Auth',
-                    function($scope, CurrentUser, Auth) {
-                        $scope.user = CurrentUser.user;
+                    '$scope', 'Player', 'Auth',
+                    function($scope, Player, Auth) {
+                        $scope.player = Player.player;
                         $scope.auth = Auth;
 
                         $scope.logout = function() {
