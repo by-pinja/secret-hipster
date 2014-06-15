@@ -9,7 +9,7 @@
  *          [
  *              '$scope', '_',
  *              function ($scope, _) {
- *                  $scope._ = _;
+ *                  var foo = _.map(data, function(foo) { return foo.bar = 'foobar'; });
  *              }
  *          ]
  *      );
