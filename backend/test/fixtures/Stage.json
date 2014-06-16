@@ -1,0 +1,14 @@
+[
+    {
+        "name": "Jyväsjärvi",
+        "width": 10,
+        "height": 10,
+        "maxPlayers": 3
+    },
+    {
+        "name": "Päijänne",
+        "width": 15,
+        "height": 15,
+        "maxPlayers": 6
+    }
+]

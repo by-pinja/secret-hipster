@@ -12,6 +12,9 @@ module.exports = {
             type: 'integer',
             defaultsTo: 1 // 1 = open, 2 = round begins, 3 = round end, 4 = game end
         },
+        stage: {
+            model: 'stage'
+        },
         players: {
             collection: 'player',
             via: 'games',
