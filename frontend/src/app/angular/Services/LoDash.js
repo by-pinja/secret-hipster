@@ -19,7 +19,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.services')
+    angular.module('HipsterShipster.services')
         .factory('_',
             [
                 '$window',

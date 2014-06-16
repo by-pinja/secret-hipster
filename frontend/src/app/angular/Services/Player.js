@@ -11,14 +11,14 @@
  *              '$scope', 'Auth', 'Player',
  *              function ($scope, Auth, Player) {
  *                  $scope.auth = Auth;
- *                  $scope.user = Player.user;
+ *                  $scope.player = Player.user;
  *              }
  *          ]
  *      );
  *
  * Usage example in view:
  *  <div data-ng-show="auth.isAuthenticated()">
- *      Hello, <strong>{{user().email}}</strong>
+ *      Hello, <strong>{{player().email}}</strong>
  *  </div>
  *
  * Happy coding!
@@ -26,7 +26,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.services')
+    angular.module('HipsterShipster.services')
         .factory('Player',
             [
                 'Storage',

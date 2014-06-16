@@ -17,7 +17,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.directives')
+    angular.module('HipsterShipster.directives')
         .directive('keyPress', function() {
             return function(scope, element, attributes) {
                 element.bind('keydown keypress', function(event) {

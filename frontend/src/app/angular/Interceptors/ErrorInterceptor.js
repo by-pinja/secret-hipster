@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.interceptors')
+    angular.module('HipsterShipster.interceptors')
         .factory('ErrorInterceptor',
             [
                 '$q', 'Message',

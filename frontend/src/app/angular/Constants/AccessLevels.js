@@ -7,7 +7,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend')
+    angular.module('HipsterShipster')
         .constant('AccessLevels', {
             anon: 0,
             player: 1

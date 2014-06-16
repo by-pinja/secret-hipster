@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.directives')
+    angular.module('HipsterShipster.directives')
         .directive('template', function() {
             return {
                 restrict: 'E',
@@ -17,7 +17,10 @@
                 replace: true,
                 link: function(scope, element, attrs) {
                     scope.getTemplateUrl = function() {
-                        return (attrs.src[0] == '/') ? attrs.src + '.html' : '/frontend/partials/' + attrs.src + '.html';
+                        return (attrs.src[0] == '/')
+                            ? attrs.src + '.html'
+                            : '/HipsterShipster/partials/' + attrs.src + '.html'
+                        ;
                     };
                 },
                 template: '<div data-ng-include="getTemplateUrl()"></div>'

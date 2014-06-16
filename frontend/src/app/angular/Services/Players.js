@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.services')
+    angular.module('HipsterShipster.services')
         .factory('Players',
             [
                 '$sailsSocket', 'BackendConfig',

@@ -43,7 +43,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.services')
+    angular.module('HipsterShipster.services')
         .factory('Auth',
             [
                 '$sailsSocket', '$state', 'Storage', 'AccessLevels', 'BackendConfig',

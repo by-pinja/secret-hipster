@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.filters')
+    angular.module('HipsterShipster.filters')
         .filter('newLines', function() {
             return function(text) {
                 return text.toString().replace(/\n/g, '<br/>');

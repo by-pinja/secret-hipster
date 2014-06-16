@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.game')
+    angular.module('HipsterShipster.game')
         .controller('gameController',
         [
             '$scope', '$sailsSocket',  'BackendConfig',
@@ -155,7 +155,7 @@
         ]
     );
 
-    angular.module('frontend.game')
+    angular.module('HipsterShipster.game')
         .filter('range', function() {
             return function(input, min, max) {
                 min = parseInt(min); // Make string input int

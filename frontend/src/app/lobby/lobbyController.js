@@ -1,12 +1,25 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.controllers')
+    angular.module('HipsterShipster.lobby')
         .controller('lobbyController',
             [
                 '$scope', '$timeout', '$sailsSocket', 'Player', 'Players', 'GameService', 'Chat', 'Message',
                 function($scope, $timeout, $sailsSocket, Player, Players, GameService, Chat, Message) {
                     var handlers = {};
+
+                    // Lobby message handlers
+
+                    /**
+                     * Player connected to lobby,
+                     *
+                     * @param   {messages.playerConnected}    data
+                     */
+                    handlers.playerConnected = function(data) {
+                        Message.success(data.message);
+
+                        $scope.players.push(data.player);
+                    };
 
                     $scope.player = Player.player();
                     $scope.message = {
@@ -28,21 +41,12 @@
                     // Listen lobby messages
                     $sailsSocket
                         .subscribe('game', function(message) {
-                            handlers[message.verb](message.data);
+                            if (handlers[message.verb]) {
+                                handlers[message.verb](data);
+                            } else {
+                                console.log("Implement 'lobbyController' handler for '" + message.verb + "' event.");
+                            }
                         });
-
-                    // Lobby message handlers
-
-                    /**
-                     * Player connected to lobby,
-                     *
-                     * @param   {messages.playerConnected}    data
-                     */
-                    handlers.playerConnected = function(data) {
-                        Message.success(data.message);
-
-                        $scope.players.push(data.player);
-                    };
 
                     // Load chat messages from server
                     Chat

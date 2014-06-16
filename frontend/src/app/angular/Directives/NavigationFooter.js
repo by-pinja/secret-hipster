@@ -8,13 +8,13 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.directives')
+    angular.module('HipsterShipster.directives')
         .directive('navigationFooter', function() {
             return {
                 restrict: 'E',
                 replace: true,
                 scope: {},
-                templateUrl: '/frontend/partials/Directives/NavigationFooter/footer.html'
+                templateUrl: '/HipsterShipster/partials/Directives/NavigationFooter/footer.html'
             };
         });
 }());

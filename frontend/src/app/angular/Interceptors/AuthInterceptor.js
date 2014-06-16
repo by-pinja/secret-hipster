@@ -9,7 +9,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.interceptors')
+    angular.module('HipsterShipster.interceptors')
         .factory('AuthInterceptor',
             [
                 '$q', '$injector', 'Storage',

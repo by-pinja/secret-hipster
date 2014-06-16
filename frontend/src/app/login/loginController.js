@@ -1,8 +1,8 @@
 (function() {
     'use strict';
 
-    angular.module('frontend.controllers')
-        .controller('LoginController',
+    angular.module('HipsterShipster.login')
+        .controller('loginController',
             [
                 '$scope', '$state', 'Auth',
                 function($scope, $state, Auth) {

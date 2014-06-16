@@ -8,7 +8,7 @@
 (function() {
     'use strict';
 
-    angular.module('frontend')
+    angular.module('HipsterShipster')
         .constant('BackendConfig', {
             url: window.io.sails.url
         });
