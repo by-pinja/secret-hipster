@@ -1,15 +1,32 @@
-# Backend side for 'xx' boilerplate
+# Backend for 'HipsterShipster' application
 
 Backend is a [Sails](http://sailsjs.org) application without frontend. Basically this only serves an API and
-user authentication services - nothing else.
+player authentication services - nothing else.
+
+## API description
+todo add API description...
+
+## Installation instructions
+First of all you need following applications installed on your box
+<pre>
+node.js, http://nodejs.org/
+Sails.js, http://sailsjs.org/
+Bower, https://github.com/bower/bower
+MySQL, http://www.mysql.com/
+</pre>
+
+After that you can install 'HipsterShipster' backend simply by just running command:
+<pre>
+npm install
+</pre>
 
 ## Author
-Tarmo Leppänen
+See at Protacon Solutions members and repository contributors.
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014 Tarmo Leppänen
+Copyright (c) 2014 Protacon Solutions
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
