@@ -20,7 +20,7 @@
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.2",
     "rc": "~0.3.3",
-    "sails": "~0.10.0-rc7",
+    "sails": "~0.10.0-rc8",
     "sails-disk": "~0.10.0",
     "sails-mysql": "~0.10.0-rc7",
     "validator": "~3.12.0",
