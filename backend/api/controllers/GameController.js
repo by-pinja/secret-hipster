@@ -6,6 +6,7 @@
  */
 
 var _ = require('lodash');
+var async = require('async');
 
 module.exports = {
     getPlayers: function(req, res) {
@@ -38,9 +39,9 @@ module.exports = {
                 .then(
                     function(data) {
                         var socketData = {
-                            verb: 'playerConnected',
+                            verb: 'playerConnectedLobby',
                             data: {
-                                message: 'Player \'' + data.player.nick + '\' joined!',
+                                message: 'Player \'' + data.player.nick + '\' connected to lobby!',
                                 player: data.player
                             }
                         };
@@ -48,7 +49,7 @@ module.exports = {
                         // Emit socket message that player has connected to lobby
                         sails.sockets.emit(_.remove(sails.sockets.subscribers(), function(socket) {
                             return socket != socketId;
-                        }), 'game', socketData);
+                        }), 'gameMessage', socketData);
 
                         res.json(200, {player: data.player, token: data.token});
                     },
@@ -63,47 +64,78 @@ module.exports = {
     },
 
     joinGame: function(req, res) {
-        // Todo fetch this from database...
-        var data = {
-            Name: 'Awesome game',
-            Players: [
-                {
-                    nick: 'foo',
-                    points: 0,
-                    state: 0
-                },
-                {
-                    nick: 'bar',
-                    points: 0,
-                    state: 0
-                }
-            ],
-            Stage: {
-                width: 10,
-                height: 10
-            },
-            Ships: [
-                {
-                    id: 1,
-                    name: 'Ruotsin laiva',
-                    width: 4
-                },
-                {
-                    id: 2,
-                    name: 'Jolla',
-                    width: 1
-                }
-            ]
-        };
+        var uuid = req.param('uuid');
 
-        res.json(data);
+        async.parallel(
+            {
+                player: function(callback) {
+                    PlayerService
+                        .getPlayer(req)
+                        .then(
+                            function(player) {
+                                callback(null, player);
+                            },
+                            function(error) {
+                                callback(error, null);
+                            }
+                        );
+                },
+                game: function(callback) {
+                    GameService.get({uuid: uuid}, callback);
+                },
+                ships: function(callback) {
+                    ShipService.collection({}, callback);
+                }
+            },
+            function(error, data) {
+                if (error) {
+                    res.json(500, error);
+                } else if (!data.game) {
+                    error = new Error();
+
+                    error.message = 'Game not found.';
+                    error.status = 404;
+
+                    res.json(404, error);
+                } else {
+                    var player = _.find(data.game.players, function(player) {
+                        return player.id == data.player.id;
+                    });
+
+                    // Player not currently in this game
+                    if (!player) {
+                        data.game.players.add(data.player.id);
+                        data.game.save();
+
+                        data.game.players.push(data.player);
+                    } else {
+                        // Fetch player current state
+                    }
+
+                    var socketId = sails.sockets.id(req.socket);
+                    var socketData = {
+                        verb: 'playerConnectedGame',
+                        data: {
+                            message: 'Player \'' + data.player.nick + '\' entered game!',
+                            player: data.player
+                        }
+                    };
+
+                    // Emit socket message that player has connected to lobby
+                    sails.sockets.emit(_.remove(sails.sockets.subscribers(), function(socket) {
+                        return socket != socketId;
+                    }), 'gameMessage', socketData);
+
+                    var output = _.merge(data.game, {ships: data.ships});
+
+                    res.json(200, output);
+                }
+            }
+        );
     },
 
     placeShips: function(req, res) {
-        var data = {
-            foo: 'bar',
-            bar: 'foo'
-        };
+        var data = req.param('data');
 
         // Todo add ship placements to database
 
@@ -123,7 +155,7 @@ module.exports = {
                     // Emit socket message to players that I am ready
                     sails.sockets.emit(_.remove(sails.sockets.subscribers(), function(socket) {
                         return socket != sails.sockets.id(req.socket);
-                    }), 'game', socketData);
+                    }), 'gameMessage', socketData);
                 },
                 function(error) {
                     console.log("error occurred at PlayerService.getPlayer(req)");
