@@ -8,12 +8,10 @@ todo add API description...
 
 ## Installation instructions
 First of all you need following applications installed on your box
-<pre>
-node.js, http://nodejs.org/
-Sails.js, http://sailsjs.org/
-Bower, https://github.com/bower/bower
-MySQL, http://www.mysql.com/
-</pre>
+* node.js, http://nodejs.org/
+* Sails.js, http://sailsjs.org/
+* Bower, https://github.com/bower/bower
+* MySQL, http://www.mysql.com/
 
 After that you can install 'HipsterShipster' backend simply by just running command:
 <pre>
