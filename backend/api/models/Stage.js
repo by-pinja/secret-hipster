@@ -9,6 +9,7 @@
 
 module.exports = {
     schema: true,
+    migrate: 'alter',
 
     attributes: {
         name: {

@@ -8,6 +8,7 @@
  */
 module.exports = {
     schema: true,
+    migrate: 'alter',
 
     attributes: {
         message: {
