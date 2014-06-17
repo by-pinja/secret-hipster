@@ -4,8 +4,11 @@
     angular.module('HipsterShipster.lobby')
         .controller('lobbyController',
             [
-                '$scope', '$timeout', '$sailsSocket', 'Player', 'Players', 'GameService', 'Chat', 'Message',
-                function($scope, $timeout, $sailsSocket, Player, Players, GameService, Chat, Message) {
+                '$scope', '$timeout', '$state', '$sailsSocket',
+                'Player', 'Players', 'GameService', 'GameState', 'Chat', 'Message',
+                function($scope, $timeout, $state, $sailsSocket,
+                         Player, Players, GameService, GameState, Chat, Message
+                ) {
                     var handlers = {};
 
                     // Lobby message handlers
@@ -13,14 +16,16 @@
                     /**
                      * Player connected to lobby,
                      *
-                     * @param   {messages.playerConnected}    data
+                     * @param   {messages.playerConnectedLobby} data
                      */
-                    handlers.playerConnected = function(data) {
+                    handlers.playerConnectedLobby = function(data) {
                         Message.success(data.message);
 
                         $scope.players.push(data.player);
                     };
 
+                    $scope.selectedGame = '';
+                    $scope.gameState = GameState;
                     $scope.player = Player.player();
                     $scope.message = {
                         player: $scope.player.id,
@@ -31,22 +36,36 @@
                     $scope.players = [];
                     $scope.games = [];
 
-                    // Fetch games from backend
-                    GameService
-                        .get()
-                        .success(function(games) {
-                            $scope.games = games;
-                        });
+                    $scope.selectGame = function(game) {
+                        if ($scope.selectedGame === game.uuid) {
+                            $scope.selectedGame = '';
+                        } else {
+                            $scope.selectedGame = game.uuid;
+                        }
+                    };
+
+                    $scope.enterGame = function() {
+                        $state.go('game.game', {game: $scope.selectedGame});
+                    };
 
                     // Listen lobby messages
                     $sailsSocket
-                        .subscribe('game', function(message) {
+                        .subscribe('gameMessage', function(message) {
                             if (handlers[message.verb]) {
-                                handlers[message.verb](data);
+                                handlers[message.verb](message.data);
                             } else {
                                 console.log("Implement 'lobbyController' handler for '" + message.verb + "' event.");
                             }
                         });
+
+                    // Fetch games from backend
+                    GameService
+                        .collection()
+                        .success(
+                            function(games) {
+                                $scope.games = games;
+                            }
+                        );
 
                     // Load chat messages from server
                     Chat
@@ -58,6 +77,7 @@
                         );
 
                     // Fetch current players
+                    // todo: add this to route resolve
                     $timeout(function() {
                         Players
                             .get()

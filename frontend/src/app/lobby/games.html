@@ -1,15 +1,38 @@
 <h3>Games</h3>
 
-<ol>
-    <li data-ng-repeat="game in games | orderBy: 'name'">
-        {{game.name}} <ul>
-            <li>State: {{game.state}} <em>todo: explain states</em></li>
-            <li>Stage: <em>todo: stage info here</em></li>
-            <li>Players: {{game.players.length}} <em>todo: show players</em></li>
+<ol class="game-list">
+    <li
+        data-ng-repeat="game in games | orderBy: 'name'"
+        data-ng-click="selectGame(game)"
+        data-ng-class="{'selected': game.uuid == selectedGame}"
+    >
+        {{game.name}}
+        <ul>
+            <li>
+                State: <em>{{gameState[game.state]}}</em>
+            </li>
+            <li>
+                Stage:
+                    <em>
+                        {{game.stage.name}}
+                        <span class="text-muted">[{{game.stage.width}} x {{game.stage.height}}]</span>
+                    </em>
+            </li>
+            <li>
+                Players: <em>{{game.players.length}}/{{game.stage.maxPlayers}}</em>
+            </li>
         </ul>
     </li>
 </ol>
 
-<a class="btn btn-primary"
-   data-ui-sref="game.game"
->Enter game</a>
+<div class="row">
+    <div class="col-xs-12">
+        <button class="btn btn-primary">Create new game</button>
+
+        <button class="btn btn-primary"
+            data-ng-disabled="!selectedGame"
+            data-ng-click="enterGame()"
+            data-ng-bind="selectedGame ? 'Enter game' : 'Select game first'"
+        ></button>
+    </div>
+</div>
