@@ -1,22 +1,29 @@
 (function() {
     'use strict';
 
+    /**
+     * Generic game service factory for HipsterShipster game application. This service contains
+     * following methods that you can use in where ever you inject this service.
+     *
+     *  GameService.get(parameters)
+     *  GameService.collection(parameters)
+     *  GameService.join(parameters)
+     *  GameService.create(data)
+     *
+     * Also note that this service will automatic subscribe client to listen 'game' socket stream
+     * messages.
+     *
+     * @todo    Add better information about method parameters
+     * @todo    Add support for .get(123)
+     */
     angular.module('HipsterShipster.services')
         .factory('GameService',
             [
                 '$sailsSocket', '$timeout', 'BackendConfig',
                 function($sailsSocket, $timeout, BackendConfig) {
                     var games = [];
-                    var handlers = {};
 
-                    // Add handler for 'created' event
-                    handlers.created = function(message) {
-                        games.push(message.data);
-                    };
-
-                    // Todo: add delete and update handlers
-
-                    // Subscribe to games and attach 'created' event to 'message' room
+                    // Subscribe to 'game' socket stream
                     $sailsSocket
                         .subscribe('game', function(data) {
                             if (handlers[data.verb]) {
@@ -26,10 +33,32 @@
                             }
                         });
 
-                    // Load games from server
-                    function getGames() {
+                    var handlers = {};
+
+                    // Add handler for 'created' event
+                    handlers.created = function(message) {
+                        games.push(message.data);
+                    };
+
+                    // Fetch specified game from server
+                    function get(parameters) {
+                        parameters = {params: parameters || {}};
+
                         return $sailsSocket
-                            .get(BackendConfig.url + '/game')
+                            .get(BackendConfig.url + '/game', parameters)
+                            .success(
+                                function(response) {
+                                    return response[0];
+                                }
+                            );
+                    }
+
+                    // Load games from server
+                    function collection(parameters) {
+                        parameters = {params: parameters || {}};
+
+                        return $sailsSocket
+                            .get(BackendConfig.url + '/game', parameters)
                             .success(
                                 function(response) {
                                     games = response;
@@ -40,7 +69,7 @@
                     }
 
                     // Create a new message
-                    function createGame(data) {
+                    function create(data) {
                         return $sailsSocket
                             .post(BackendConfig.url + '/game', data)
                             .success(
@@ -52,10 +81,25 @@
                             );
                     }
 
+                    // Join game
+                    function join(parameters) {
+                        parameters = parameters || {};
+
+                        return $sailsSocket
+                            .post(BackendConfig.url + '/game/joinGame/', parameters)
+                            .success(
+                                function(response) {
+                                    return response;
+                                }
+                            );
+                    }
+
                     // Todo: add update and delete
                     return {
-                        get: getGames,
-                        create: createGame
+                        get: get,
+                        join: join,
+                        collection: collection,
+                        create: create
                     };
                 }
             ]
