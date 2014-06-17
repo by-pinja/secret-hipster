@@ -26,7 +26,11 @@
     angular.module('HipsterShipster.interceptors', []);
     angular.module('HipsterShipster.services', []);
 
-    // General components for 'HipsterShipster' application
+    /**
+     * General components for 'HipsterShipster' application. This is just for 3rd
+     * party dependencies, so if you add new library via bower remember to add it
+     * here too.
+     */
     angular.module('HipsterShipster.common', [
         'ngSanitize',
         'ui.router',
@@ -39,7 +43,11 @@
         'sails.io'
     ]);
 
-    // Page components for 'HipsterShipster' application
+    /**
+     * Page components for 'HipsterShipster' application. Remember to add new page
+     * dependency here when you add new page to app. See examples from /game, /lobby
+     * /login, etc.
+     */
     angular.module('HipsterShipster.components', [
         'HipsterShipster.game',
         'HipsterShipster.lobby',
@@ -93,6 +101,7 @@
                             templateUrl: '/HipsterShipster/login/login.html'
                         });
 
+                    // Routes that need user data
                     $stateProvider
                         .state('game', {
                             abstract: true,
@@ -107,11 +116,18 @@
                             controller: 'lobbyController'
                         })
                         .state('game.game', {
-                            url: '/game',
+                            url: '/game/:game',
                             templateUrl: '/HipsterShipster/game/game.html',
-                            controller: 'gameController'
+                            controller: 'gameController',
+                            resolve: {
+                                gameData: [
+                                    '$stateParams', 'GameService',
+                                    function($stateParams, GameService) {
+                                        return GameService.join({uuid: $stateParams.game});
+                                    }
+                                ]
+                            }
                         });
-
 
                     // For any unmatched url, redirect to /state1
                     $urlRouterProvider.otherwise('/login');
