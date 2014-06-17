@@ -1,25 +1,31 @@
 [
     {
+        "id": 1,
         "name": "Vetehinen",
         "width": 5
     },
     {
+        "id": 2,
         "name": "Vesihiisi",
         "width": 4
     },
     {
+        "id": 3,
         "name": "AG 12",
         "width": 3
     },
     {
+        "id": 4,
         "name": "AG 16",
         "width": 3
     },
     {
+        "id": 5,
         "name": "Tursas",
         "width": 2
     },
     {
+        "id": 6,
         "name": "Jolla",
         "width": 1
     }
