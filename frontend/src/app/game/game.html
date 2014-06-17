@@ -1,53 +1,8 @@
 <h1>Game</h1>
 
-<style>
-    table.map {
-        border: 1px solid #333;
-        font-family: monospace;
-        background: aliceblue;
-    }
-
-    .map td {
-        border:1px solid #add8e6;
-        color:deepskyblue;
-        padding:0;
-        width: 20px;
-        height: 20px;
-    }
-    .map td div {
-        width:100%;
-        height: 100%;
-    }
-
-    .ship-1 {
-        background: orangered;
-        transition:background 0.5s;
-    }
-    .ship-2 {
-        background: greenyellow;
-        transition:background 0.5s;
-    }
-    .ship-3 {
-        background: #a15900;
-        transition:background 0.5s;
-    }
-    .ship-4 {
-        background: #0055cc;
-        transition:background 0.5s;
-    }
-    .ship-5 {
-        background: #008800;
-        transition:background 0.5s;
-    }
-    .ship-6 {
-        background: #003300;
-        transition:background 0.5s;
-    }
-</style>
-
 <div class="row">
     <div class="col-md-10">
-        <div data-ng-class="{'hidden' : !gameData.Ships.length}">
+        <div data-ng-class="{'hidden' : !gameData.ships.length}">
         <b>Selected ship:</b> {{selectedShip.name}}, {{selectedShip.width}}<br>
         <b>Direction:</b>
         <label><input type="radio" name="direction" ng-model="placeDirection" value="horizontal"> Horizontal</label>
@@ -55,8 +10,8 @@
         </div>
 
         <table class="map">
-            <tr data-ng-repeat="row in [] | range : 1:gameData.Stage.height">
-                <td data-ng-repeat="col in [] | range : 1:gameData.Stage.width">
+            <tr data-ng-repeat="row in [] | range : 0 : gameData.stage.height">
+                <td data-ng-repeat="col in [] | range : 0 : gameData.stage.width">
                  <div data-ng-click="placeShip(row, col)" title="{{shipMapData[row][col].ship.name}}" class="ship-{{shipMapData[row][col].ship.id}}">{{shipMapData[row][col].char}}</div>
                 </td>
             </tr>
@@ -65,7 +20,7 @@
     <div class="col-md-2">
         <h3>Players</h3>
         <ol>
-            <li data-ng-repeat="player in gameData.Players | orderBy : player.points">
+            <li data-ng-repeat="player in gameData.players | orderBy : player.points">
                 <b>{{player.nick}}</b>
                 {{player.points}}
                 {{player.state}}
@@ -74,11 +29,11 @@
         
         <h3>Ships</h3>
         <ul>
-            <li data-ng-repeat="ship in gameData.Ships">
+            <li data-ng-repeat="ship in gameData.ships">
                 <span data-ng-click="shipSelected(ship)" data-ng-class="{'bg-success' : (ship == selectedShip)}">{{ship.name}} {{ship.width}}</span>
             </li>
         </ul>
 
-        <button class="btn btn-primary" data-ng-click="readyToPlay()" data-ng-disabled="gameData.Ships.length">I'm ready</button>
+        <button class="btn btn-primary" data-ng-click="readyToPlay()" data-ng-disabled="gameData.ships.length">I'm ready</button>
     </div>
 </div>
