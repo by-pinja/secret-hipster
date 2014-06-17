@@ -18,6 +18,26 @@ After that you can install 'HipsterShipster' backend simply by just running comm
 npm install
 </pre>
 
+### Configuration
+Sails.js applications uses ```local.js``` configuration file to overwrite any existing configuration value and
+add your own config values if you need those. First of all you must make your own configuration file, and this
+can be done by following command:
+<pre>
+cd config
+cp local_example.js local.js
+</pre>
+
+After that you can open that ```local.js``` with your favorite editor and make necessary changes to if match
+your own environment.
+
+### Running
+Sails.js server is started via following command:
+<pre>
+sails lift
+</pre>
+
+After successfully server start you should see some sails lifted...
+
 ## Authors
 See at Protacon Solutions organization [members](https://github.com/orgs/ProtaconSolutions/members) and repository
 [contributors](https://github.com/ProtaconSolutions/secret-hipster/graphs/contributors).
