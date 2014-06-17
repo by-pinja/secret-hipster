@@ -18,8 +18,9 @@ After that you can install 'HipsterShipster' backend simply by just running comm
 npm install
 </pre>
 
-## Author
-See at Protacon Solutions members and repository contributors.
+## Authors
+See at Protacon Solutions organization [members](https://github.com/orgs/ProtaconSolutions/members) and repository
+[contributors](https://github.com/ProtaconSolutions/secret-hipster/graphs/contributors).
 
 ## License
 The MIT License (MIT)
