@@ -9,8 +9,37 @@ structure:
 ```
 http://YourBackend:Port/Controller/Action
 ```
+
 ### Game
 This is main controller which players will use on this application. This controller has following endpoints:
+
+#### joinLobby
+* [ ] Requires JWT token
+* [x] Allowed methods: GET, POST
+* [ ] No parameters
+
+This is the first request that client should do against the backend server. This will initialize JWT token
+and register player to use sockets. This will require following request parameters to work:
+
+```json
+{
+    nick: "YourNick"
+}
+```
+
+Response for this request will be JSON object as in following structure:
+
+```json
+"user": {
+    "id": 123,
+    "nick": "YourNick",
+    "uuid": "uuid v4 string"
+}
+"token": "JWT token which must be sent in each authorized requests" 
+```
+
+Remember to store ```JWT``` token to your client and send it back in every request that requires authentication. 
+
 #### getPlayers
 * [x] Requires JWT token
 * [x] Allowed methods: GET, POST
@@ -20,14 +49,15 @@ This will return all connected players as in array of player objects in JSON for
 ```json
 [
     {
+        "id": 123
         "nick": "some nick",
-        "uuid": "uuid v4"
+        "uuid": "uuid v4 string"
     },
     ...
 ]
 ```
 
-todo add API description...
+todo finish API description...
 
 ## Installation instructions
 First of all you need following applications installed on your box
