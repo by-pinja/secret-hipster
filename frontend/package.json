@@ -7,15 +7,30 @@
     "test": "gulp test",
     "postinstall": "./node_modules/bower/bin/bower install"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ProtaconSolutions/secret-hipster.git"
+  },
+  "description": "Frontend application for HipsterShipters application.",
   "keywords": [
-    "slush, angular, slush-angular"
+    "slush", "angular", "slush-angular", "frontend", "Protacon"
   ],
+  "author": {
+    "name" : "Protacon Solutions",
+    "url" : "https://github.com/ProtaconSolutions"
+  },
+  "contributors": [
+    { "name": "dopson", "url": "https://github.com/dopson" },
+    { "name": "rapaantti", "url": "https://github.com/rapaantti" },
+    { "name": "tarlepp", "url": "https://github.com/tarlepp" }
+  ],
+  "license": "MIT",
   "dependencies": {
     "connect-history-api-fallback": "0.0.4",
-    "bower": "~1.3.3"
+    "bower": "~1.3.5"
   },
   "devDependencies": {
-    "gulp": "~3.6.2",
+    "gulp": "~3.7.0",
     "gulp-util": "~2.2.14",
     "gulp-jshint": "~1.5.0",
     "gulp-load-plugins": "~0.4.0",

@@ -1,11 +1,33 @@
 {
-  "name": "server",
-  "private": true,
+  "name": "HipsterShipster",
   "version": "0.0.0",
-  "description": "a Sails application",
-  "keywords": [],
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "debug": "node debug app.js"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ProtaconSolutions/secret-hipster.git"
+  },
+  "description": "Backend application for HipsterShipters application. This will just serve an API for frontend application.",
+  "keywords": [
+      "sails.js", "backend", "protacon", "node.js", "API", "REST", "JWT"
+  ],
+  "author": {
+    "name" : "Protacon Solutions",
+    "url" : "https://github.com/ProtaconSolutions"
+  },
+  "contributors": [
+    { "name": "dopson", "url": "https://github.com/dopson" },
+    { "name": "rapaantti", "url": "https://github.com/rapaantti" },
+    { "name": "tarlepp", "url": "https://github.com/tarlepp" }
+  ],
+  "license": "MIT",
   "dependencies": {
-    "barrels": "0.0.3",
+    "async": "^0.9.0",
+    "barrels": "0.0.4",
     "bcrypt": "~0.7.8",
     "ejs": "~0.8.4",
     "grunt": "0.4.2",
@@ -19,25 +41,14 @@
     "passport-google": "~0.3.0",
     "passport-local": "~1.0.0",
     "passport-twitter": "~1.0.2",
+    "q": "^1.0.1",
     "rc": "~0.3.3",
     "sails": "~0.10.0-rc8",
     "sails-disk": "~0.10.0",
     "sails-mysql": "~0.10.0-rc7",
-    "validator": "~3.12.0",
-    "q": "~1.0.1"
+    "validator": "~3.12.0"
   },
   "devDependencies": {
     "sails-generate-auth": "~0.1.4"
-  },
-  "scripts": {
-    "start": "node app.js",
-    "debug": "node debug app.js"
-  },
-  "main": "app.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/wunder/server.git"
-  },
-  "author": "wunder",
-  "license": ""
+  }
 }
