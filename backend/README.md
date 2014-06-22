@@ -23,19 +23,21 @@ and register player to use sockets. This will require following request paramete
 
 ```json
 {
-    nick: "YourNick"
+    "nick": "YourNick"
 }
 ```
 
 Response for this request will be JSON object as in following structure:
 
 ```json
-"user": {
-    "id": 123,
-    "nick": "YourNick",
-    "uuid": "uuid v4 string"
+{
+    "user": {
+        "id": 123,
+        "nick": "YourNick",
+        "uuid": "uuid v4 string"
+    }
+    "token": "JWT token which must be sent in each authorized requests"
 }
-"token": "JWT token which must be sent in each authorized requests" 
 ```
 
 Remember to store ```JWT``` token to your client and send it back in every request that requires authentication. 
