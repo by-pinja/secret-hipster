@@ -10,7 +10,6 @@ var gulp = require('gulp'),
     stylish = require('jshint-stylish'),
     bower = require('./bower'),
     historyApiFallback = require('connect-history-api-fallback'),
-    fs = require('fs'),
     isWatching = false;
 
 var htmlminOpts = {

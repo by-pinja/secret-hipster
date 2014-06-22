@@ -16,11 +16,8 @@
                 scope: true,
                 replace: true,
                 link: function(scope, element, attrs) {
-                    scope.getTemplateUrl = function() {
-                        return (attrs.src[0] == '/')
-                            ? attrs.src + '.html'
-                            : '/HipsterShipster/partials/' + attrs.src + '.html'
-                        ;
+                    scope.getTemplateUrl = function () {
+                        return (attrs.src[0] === '/') ? attrs.src + '.html' : '/HipsterShipster/partials/' + attrs.src + '.html';
                     };
                 },
                 template: '<div data-ng-include="getTemplateUrl()"></div>'

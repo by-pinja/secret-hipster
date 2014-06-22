@@ -54,7 +54,7 @@
                             if (handlers[message.verb]) {
                                 handlers[message.verb](message.data);
                             } else {
-                                console.log("Implement 'lobbyController' handler for '" + message.verb + "' event.");
+                                console.log('Implement \'lobbyController\' handler for \'' + message.verb + '\' event.');
                             }
                         });
 

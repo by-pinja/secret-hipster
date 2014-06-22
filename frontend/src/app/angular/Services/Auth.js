@@ -88,7 +88,7 @@
                             return $sailsSocket
                                 .post(BackendConfig.url + '/game/joinLobby', {nick: nick})
                                 .success(function(response) {
-                                    Storage.set("auth_token", JSON.stringify(response));
+                                    Storage.set('auth_token', JSON.stringify(response));
                                 });
                         },
 

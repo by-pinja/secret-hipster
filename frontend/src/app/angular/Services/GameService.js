@@ -29,7 +29,7 @@
                             if (handlers[data.verb]) {
                                 handlers[data.verb](data);
                             } else {
-                                console.log("Implement 'GameService' handler for '" + data.verb + "' event.");
+                                console.log('Implement \'GameService\' handler for \'' + data.verb + '\' event.');
                             }
                         });
 
