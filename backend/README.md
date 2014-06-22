@@ -12,15 +12,18 @@ http://YourBackend:Port/Controller/Action
 ### Game
 This is main controller which players will use on this application. This controller has following endpoints:
 #### getPlayers
-[x] Requires JWT token
-[x] Allowed methods: GET, POST
-[x] No parameters
+* [x] Requires JWT token
+* [x] Allowed methods: GET, POST
+* [x] No parameters
 This will return all connected players as in array of player objects in JSON format. JSON data is following:
 ```json
-{
-    nick: "some nick",
-    uuid: "uuid v4"
-}
+[
+    {
+        "nick": "some nick",
+        "uuid": "uuid v4"
+    },
+    ...
+]
 ```
 
 todo add API description...
