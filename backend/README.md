@@ -15,6 +15,7 @@ This is main controller which players will use on this application. This control
 * [x] Requires JWT token
 * [x] Allowed methods: GET, POST
 * [x] No parameters
+
 This will return all connected players as in array of player objects in JSON format. JSON data is following:
 ```json
 [
