@@ -1,7 +1,6 @@
 'use strict';
 
 var uuid = require('node-uuid');
-var q = require('q');
 
 /**
  * Service method to create new player to HipsterShipters. In successfully cases this will
@@ -15,12 +14,11 @@ var q = require('q');
  * Note that token is only used to authenticate request from frontend to backend side. And
  * this token is _private_ so please don't expose it to other clients!
  *
- * @param   {string}    nick
- * @param   {string}    socketId
- *
- * @returns {Promise.promise|*}
+ * @param   {string}    nick        Player nickname
+ * @param   {string}    socketId    Current socket id of player
+ * @param   {function}  next        Callback function
  */
-exports.create = function(nick, socketId) {
+exports.create = function(nick, socketId, next) {
     var data = {
         nick: nick,
         uuid: uuid.v4(),
@@ -33,39 +31,38 @@ exports.create = function(nick, socketId) {
      */
     var token = tokenService.issueToken({uuid: data.uuid});
 
-    var deferred = q.defer();
-
     // Create new player
     Player
         .create(data)
-        .exec(
-            function(error, player) {
-                error ? deferred.reject(error) : deferred.resolve({player: player, token: token});
-            }
-        );
+        .exec(function(error, player) {
+            if (error) {
+                sails.log.error(__filename + ':' + __line + ' [Failed to create player]');
+                sails.log.error(error);
 
-    return deferred.promise;
+                next(error, null);
+            } else {
+                next(null, {player: player, token: token});
+            }
+        });
 };
 
 /**
  * Service method to get current player via request.token value.
  *
- * @param   {Request}   req
- *
- * @returns {Promise.promise|*}
+ * @param   {Request}   request Request object
+ * @param   {function}  next    Callback function
  */
-exports.getPlayer = function(req) {
-    var deferred = q.defer();
-
+exports.getPlayer = function(request, next) {
     Player
-        .findOne({uuid: req.token.uuid})
-        .exec(
-            function(error, player) {
-                error ? deferred.reject(error) : deferred.resolve(player);
+        .findOne({uuid: request.token.uuid})
+        .exec(function(error, player) {
+            if (error) {
+                sails.log.error(__filename + ':' + __line + ' [Failed to fetch player data]');
+                sails.log.error(error);
             }
-        );
 
-    return deferred.promise;
+            next(error, player);
+        });
 };
 
 /**
@@ -73,17 +70,17 @@ exports.getPlayer = function(req) {
  * reload of page. This is needed because socket id is changed when user reloads page.
  * With this we can be sure which players are online and which are not.
  *
- * @param   {token}     token
- * @param   {Request}   request
+ * @param   {token}     token   Token object
+ * @param   {Request}   request Request object
  */
 exports.updateSocketId = function(token, request) {
     if (request.isSocket) {
         Player
             .update({uuid: token.uuid}, {socketId: sails.sockets.id(request.socket)})
-            .exec(function(err, updated) {
-                if (err) {
+            .exec(function(error, updated) {
+                if (error) {
                     sails.log.error('Cannot update player socket id data');
-                    sails.log.error(err);
+                    sails.log.error(error);
                 } else {
                     // Nothing to do here
                 }
@@ -95,26 +92,52 @@ exports.updateSocketId = function(token, request) {
 };
 
 /**
- * Service method to fetch currently active users. Activity is based on currently
+ * Service method to fetch currently active players. Activity is based on currently
  * opened and listen sockets.
  *
- * @returns {Promise.promise|*}
+ * @param   {function}  next    Callback function
  */
-exports.getPlayers = function() {
-    var deferred = q.defer();
-
+exports.getPlayers = function(next) {
     var socketIds = _.map(sails.sockets.subscribers(), function(socket) {
         return {socketId: socket};
     });
 
     Player
         .find({or: socketIds})
-        .exec(
-            function(error, players) {
-                error ? deferred.reject(error) : deferred.resolve(players);
+        .exec(function(error, players) {
+            if (error) {
+                sails.log.error(__filename + ':' + __line + ' [Failed to fetch players]');
+                sails.log.error(error);
             }
-        );
 
-    return deferred.promise;
+            next(error, players);
+        });
+};
+
+/**
+ * Method to fetch specified game players from database.
+ *
+ * @param   {string}    uuid    Game UUID
+ * @param   {function}  next    Callback function
+ */
+exports.getGamePlayers = function(uuid, next) {
+    Game
+        .findOne({uuid: uuid})
+        .populate('players')
+        .exec(function(error, game) {
+            if (error) {
+                sails.log.error(__filename + ':' + __line + ' [Failed to fetch game players]');
+                sails.log.error(error);
+
+                next(error, null);
+            } else if (!game) {
+                error = new Error();
+
+                error.message = 'Game not found.';
+                error.status = 404;
+            } else {
+                next(null, game.players);
+            }
+        });
 };
 
