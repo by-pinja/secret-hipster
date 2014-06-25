@@ -12,10 +12,10 @@
         .controller('gameController',
         [
             '$scope', '$sailsSocket',
-            'BackendConfig', 'Message', '_',
+            'BackendConfig', 'Message', 'Listeners', '_',
             'gameData',
             function($scope, $sailsSocket,
-                     BackendConfig, Message, _,
+                     BackendConfig, Message, Listeners, _,
                      gameData
             ) {
                 var emptyPosition = {char : '', ship: null};
@@ -167,15 +167,20 @@
                     console.log(data);
                 };
 
-                // Listen game messages
-                $sailsSocket
-                    .subscribe('gameMessage', function(message) {
-                        if (handlers[message.verb]) {
-                            handlers[message.verb](message.data);
-                        } else {
-                            console.log("Implement 'gameController' handler for '" + message.verb + "' event.");
-                        }
-                    });
+                // Listener not yet registered
+                if (!Listeners.gameController) {
+                    // Listen game messages
+                    $sailsSocket
+                        .subscribe('gameMessage', function(message) {
+                            if (handlers[message.verb]) {
+                                handlers[message.verb](message.data);
+                            } else {
+                                console.log("Implement 'gameController' handler for '" + message.verb + "' event.");
+                            }
+                        });
+
+                    Listeners.gameController = true;
+                }
             }
         ]
     );

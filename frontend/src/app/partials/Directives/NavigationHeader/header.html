@@ -1,11 +1,31 @@
 <nav class="navbar navbar-default navbar-static-top" role="navigation">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">HipsterShipster</a>
-        <button class="pull-right btn btn-primary"
-            data-ng-click="logout()"
-            data-ng-show="auth.isAuthenticated()"
-        >
-            Logout
-        </button>
+        <div class="navbar-header">
+            <a class="navbar-brand"
+                data-ui-sref="game.lobby"
+            >HipsterShipster</a>
+
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+
+        <ul class="nav navbar-nav">
+            <li
+                data-ng-show="auth.isAuthenticated()"
+                data-ui-sref-active="active"
+            >
+                <a data-ui-sref="game.lobby">Lobby</a>
+            </li>
+
+            <li class="pull-right"
+                data-ng-show="auth.isAuthenticated()"
+            >
+                <a href="#" data-ng-click="logout()">Logout</a>
+            </li>
+        </ul>
+
     </div>
 </nav>

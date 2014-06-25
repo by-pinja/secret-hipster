@@ -14,11 +14,6 @@ h1, h2, h3, h4, h5, h5 {
   }
 }
 
-.container {
-  min-width: 100%;
-  max-width: 100%;
-}
-
 .main-container {
   margin-bottom: 30px;
 }
@@ -30,6 +25,11 @@ h1, h2, h3, h4, h5, h5 {
     margin-top: 5px;
   }
 }
+
+.navbar-nav {
+  float: none;
+}
+
 footer {
   .navbar {
     min-height: 25px;

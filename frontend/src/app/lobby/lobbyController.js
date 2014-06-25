@@ -5,9 +5,9 @@
         .controller('lobbyController',
             [
                 '$scope', '$timeout', '$state', '$sailsSocket',
-                'Player', 'Players', 'GameService', 'GameState', 'Chat', 'Message',
+                'Player', 'Players', 'GameService', 'GameState', 'Chat', 'Message', 'Listeners',
                 function($scope, $timeout, $state, $sailsSocket,
-                         Player, Players, GameService, GameState, Chat, Message
+                         Player, Players, GameService, GameState, Chat, Message, Listeners
                 ) {
                     var handlers = {};
 
@@ -48,15 +48,20 @@
                         $state.go('game.game', {game: $scope.selectedGame});
                     };
 
-                    // Listen lobby messages
-                    $sailsSocket
-                        .subscribe('gameMessage', function(message) {
-                            if (handlers[message.verb]) {
-                                handlers[message.verb](message.data);
-                            } else {
-                                console.log('Implement \'lobbyController\' handler for \'' + message.verb + '\' event.');
-                            }
-                        });
+                    // Listener not yet registered
+                    if (!Listeners.lobbyController) {
+                        // Listen lobby messages
+                        $sailsSocket
+                            .subscribe('gameMessage', function(message) {
+                                if (handlers[message.verb]) {
+                                    handlers[message.verb](message.data);
+                                } else {
+                                    console.log('Implement \'lobbyController\' handler for \'' + message.verb + '\' event.');
+                                }
+                            });
+
+                        Listeners.lobbyController = true;
+                    }
 
                     // Fetch games from backend
                     GameService
