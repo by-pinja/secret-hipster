@@ -141,10 +141,13 @@
      */
     angular.module('HipsterShipster')
         .run([
-            '$rootScope', '$state', 'Auth',
-            function($rootScope, $state, Auth) {
+            '$rootScope', '$state', '$window', 'Auth',
+            function($rootScope, $state, $window, Auth) {
                 // And when ever route changes we must check authenticate status
                 $rootScope.$on('$stateChangeStart', function(event, toState) {
+                    // This fixes the 404 GET error sails.io.js, which occur randomly
+                    $window.io.connect();
+
                     if (!Auth.authorize(toState.data.access)) {
                         event.preventDefault();
 
