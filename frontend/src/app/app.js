@@ -113,7 +113,15 @@
                         .state('game.lobby', {
                             url: '/lobby',
                             templateUrl: '/HipsterShipster/lobby/lobby.html',
-                            controller: 'lobbyController'
+                            controller: 'lobbyController',
+                            resolve: {
+                                gameData: [
+                                    'GameService',
+                                    function(GameService) {
+                                        return GameService.leave();
+                                    }
+                                ]
+                            }
                         })
                         .state('game.game', {
                             url: '/game/:game',

@@ -42,3 +42,21 @@ exports.get = function(where, next, noExistsCheck) {
             next(error, game);
         });
 };
+
+/**
+ * Service method to fetch games that belongs to current user.
+ *
+ * @todo    refactor this just to return real game objects and nothing else.
+ *
+ * @param   {{}}        where   Query conditions
+ * @param   {Request}   request Request object
+ * @param   {Function}  next    Callback function which is called after job is done
+ */
+exports.getMyGames = function(where, request, next) {
+    Game
+        .find(where)
+        .populate('players', {uuid: request.token.uuid})
+        .exec(function(error, /** sails.model.game[] */ games) {
+            next(error, games);
+        });
+};

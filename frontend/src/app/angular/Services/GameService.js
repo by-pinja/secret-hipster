@@ -35,9 +35,23 @@
 
                     var handlers = {};
 
-                    // Add handler for 'created' event
+                    // Handler for 'created' event
                     handlers.created = function(message) {
                         games.push(message.data);
+                    };
+
+                    // Handler for 'updated' event
+                    handlers.updated = function(message) {
+                        handlers['removed'](message);
+
+                        games.push(message.data);
+                    };
+
+                    // Handler for 'removed' event
+                    handlers.removed = function(message) {
+                        _.remove(games, function(game) {
+                            return game.id === message.id;
+                        });
                     };
 
                     // Fetch specified game from server
@@ -94,10 +108,24 @@
                             );
                     }
 
+                    // Leave game
+                    function leave(parameters) {
+                        parameters = parameters || {};
+
+                        return $sailsSocket
+                            .post(BackendConfig.url + '/game/leaveGame/', parameters)
+                            .success(
+                                function(response) {
+                                    return response;
+                                }
+                            );
+                    }
+
                     // Todo: add update and delete
                     return {
                         get: get,
                         join: join,
+                        leave: leave,
                         collection: collection,
                         create: create
                     };

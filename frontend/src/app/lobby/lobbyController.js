@@ -14,7 +14,7 @@
                     // Lobby message handlers
 
                     /**
-                     * Player connected to lobby,
+                     * Player connected to lobby.
                      *
                      * @param   {messages.playerConnectedLobby} data
                      */
@@ -22,6 +22,28 @@
                         Message.success(data.message);
 
                         $scope.players.push(data.player);
+                    };
+
+                    /**
+                     * Player connected to a certain game.
+                     *
+                     * @param   {messages.playerConnectedGame} data
+                     */
+                    handlers.playerConnectedGame = function(data) {
+                        Message.success(data.message);
+
+                        // todo: Add user to be muted on chat?
+                    };
+
+                    /**
+                     * Player disconnected to a certain game.
+                     *
+                     * @param   {messages.playerDisconnectedGame} data
+                     */
+                    handlers.playerDisconnectedGame = function(data) {
+                        Message.success(data.message);
+
+                        // todo: Remove user to be muted on chat?
                     };
 
                     $scope.selectedGame = '';

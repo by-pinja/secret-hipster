@@ -26,6 +26,7 @@ module.exports = {
         } else {
             var socketId = sails.sockets.id(request.socket);
 
+            // Create new player
             PlayerService
                 .create(nick, socketId, function(error, player) {
                     if (error) {
@@ -70,6 +71,86 @@ module.exports = {
                 } else {
                     response.json(200, players);
                 }
+            });
+    },
+
+    /**
+     * Action which is fired when ever user leaves a game. Note that this action is run
+     * every time when user goes to game lobby. Basically this is the only way to make
+     * sure that players are connected to game.
+     *
+     * At first we need to fetch current player data and his/hers game(s). Basically there
+     * should be only one but you cannot never be sure :D
+     *
+     * After that action will iterate each games and check that current user is really
+     * joined that game, if is action will remove that relation and send socket message
+     * about that to actual Game model and custom 'gameMessage' room.
+     *
+     * @param   {express.Request}   request     Request object
+     * @param   {Response}  response    Response object
+     */
+    leaveGame: function(request, response) {
+        // Fetch initial data that is needed
+        async.parallel(
+            {
+                player: function(callback) {
+                    PlayerService.getPlayer(request, callback);
+                },
+                games: function(callback) {
+                    GameService.getMyGames({}, request, callback);
+                }
+            },
+            function(error, data) {
+                async
+                    .each(data.games, function(game, callback) {
+                        if (_.isEmpty(game.players)) {
+                            callback();
+                        } else {
+                            game.players.remove(data.player.id);
+                            game.save(function(error) {
+                                if (error) {
+                                    callback(error);
+                                } else {
+                                    // Fetch game data and publish update for that
+                                    GameService
+                                        .get(game.id, function(error, game) {
+                                            var socketId = sails.sockets.id(request.socket);
+                                            var socketData = {
+                                                verb: 'playerDisconnectedGame',
+                                                data: {
+                                                    message: 'Player \'' + data.player.nick + '\' disconnected from game \'' + game.name + '\', shame on him/her!',
+                                                    player: data.player,
+                                                    game: game
+                                                }
+                                            };
+
+                                            // Emit socket message to all other but client himself
+                                            sails.sockets.emit(_.remove(sails.sockets.subscribers(), function(socket) {
+                                                return socket != socketId;
+                                            }), 'gameMessage', socketData);
+
+                                            // Publish game model update event
+                                            Game.publishUpdate(game.id, game);
+
+                                            callback(error);
+                                        }, false);
+                                }
+                            });
+                        }
+
+                    },
+                    /**
+                     * Callback function for async.each call.
+                     *
+                     * @param   {null|{}}   error
+                     */
+                    function(error) {
+                        if (error) {
+                            response.json(500, error);
+                        } else {
+                            response.json(200, true);
+                        }
+                    });
             });
     },
 
@@ -168,10 +249,13 @@ module.exports = {
                         }
                     };
 
-                    // Emit socket message that player has connected to lobby
+                    // Emit socket message to all other but client himself
                     sails.sockets.emit(_.remove(sails.sockets.subscribers(), function(socket) {
                         return socket != socketId;
                     }), 'gameMessage', socketData);
+
+                    // Publish game model update event
+                    Game.publishUpdate(data.game.id, data.game);
 
                     var output = _.merge(data.game, {ships: data.ships});
 
