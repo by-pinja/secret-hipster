@@ -29,7 +29,7 @@
     "async": "^0.9.0",
     "barrels": "0.0.4",
     "bcrypt": "~0.7.8",
-    "ejs": "~0.8.4",
+    "ejs": "~2.5.5",
     "grunt": "0.4.2",
     "include-all": "~0.1.3",
     "jsonwebtoken": "~0.4.0",
