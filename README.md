@@ -1,3 +1,5 @@
+Old labday/hackday project.
+
 -> Join
 -Name:string
 
